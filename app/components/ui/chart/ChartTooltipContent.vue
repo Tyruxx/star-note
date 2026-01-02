@@ -95,7 +95,7 @@ const tooltipLabel = computed(() => {
               </span>
             </div>
             <span v-if="value" class="text-foreground font-mono font-medium tabular-nums">
-              {{ value.toLocaleString() }}
+              {{ value.toFixed(2) }}
             </span>
           </div>
         </div>
