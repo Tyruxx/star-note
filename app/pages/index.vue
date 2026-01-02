@@ -1,7 +1,7 @@
 <script lang="ts" setup>
     import { ChevronLeft } from 'lucide-vue-next'
     import { Button } from '@/components/ui/button'
-    const stateConvertFrom = useState("convert-from", () => "")
+    const stateConvertFrom = useState("convert-from", () => "SGD")
     const stateConvertTo = useState("convert-to", () => "IDR")
     const convertFrom = computed(() => stateConvertFrom.value)
     const convertTo = computed(() => stateConvertTo.value)
@@ -57,6 +57,7 @@
         watch: [convertFrom, convertTo]
     })
     console.log(testStr.value)
+    const rateDelta = -2.33
 </script>
 <template>
     <div class="mx-auto px-8 py-8 flex h-screen flex-col gap-4 max-w-lg">
@@ -70,10 +71,7 @@
             <Conversion :country-from-img="countryFromImg" :country-to-img="countryToImg" :country-from-str="countryFromStr" :country-to-str="countryToStr" :country-from-fallback="countryFromFallback" :country-to-fallback="countryToFallback"/>
         </div>
         <div>
-            <Chart :card-title="testStr ?? ''"/>
-        </div>
-        <div>
-            <input type="text" v-model.lazy="stateConvertFrom" />
+            <Chart :card-title="testStr ?? ''" :rate-delta="rateDelta"/>
         </div>
     </div>
 </template>

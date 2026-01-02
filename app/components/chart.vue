@@ -1,11 +1,15 @@
 <script setup lang="ts">
 defineProps<{
     cardTitle: string,
+    rateDelta: number
 }>()
 import type {
   ChartConfig,
 } from "@/components/ui/chart"
-// import { Area, AreaChart, CartesianGrid, XAxis, YAxis } from "recharts"
+
+import { LineChart } from 'lucide-vue-next'
+
+// import { Area, LineChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { VisArea, VisAxis, VisLine, VisXYContainer } from "@unovis/vue"
 
 import { TrendingUp } from "lucide-vue-next"
@@ -28,12 +32,13 @@ import {
 const description = "An area chart with axes"
 
 const chartData = [
-  { month: 1, monthLabel: "January", desktop: 186, mobile: 80 },
-  { month: 2, monthLabel: "February", desktop: 305, mobile: 200 },
-  { month: 3, monthLabel: "March", desktop: 237, mobile: 120 },
-  { month: 4, monthLabel: "April", desktop: 73, mobile: 190 },
-  { month: 5, monthLabel: "May", desktop: 209, mobile: 130 },
-  { month: 6, monthLabel: "June", desktop: 214, mobile: 140 },
+  { day: 1, dayLabel: "17 Dec", desktop: 186},
+  { day: 2, dayLabel: "18 Dec", desktop: 305 },
+  { day: 3, dayLabel: "19 Dec", desktop: 237 },
+  { day: 4, dayLabel: "20 Dec", desktop: 73 },
+  { day: 5, dayLabel: "21 Dec", desktop: 209 },
+  { day: 6, dayLabel: "22 Dec", desktop: 214 },
+  { day: 7, dayLabel: "23 Dec", desktop: 214 },
 ]
 
 type Data = typeof chartData[number]
@@ -41,7 +46,7 @@ type Data = typeof chartData[number]
 const chartConfig = {
   desktop: {
     label: "Desktop",
-    color: "var(--chart-1)",
+    color: "rgb(0,0,0)",
   },
   mobile: {
     label: "Mobile",
@@ -81,34 +86,42 @@ const svgDefs = `
   <Card>
     <CardHeader>
       <CardTitle>{{ cardTitle }}</CardTitle>
+      <div class="flex flex-row items-center" v-if="rateDelta < 0">
+        <LineChart class="text-red-800"/>
+        <span class="text-sm font-semibold text-red-800">{{ rateDelta }}%</span>
+      </div>
+      <div class="flex flex-row items-center" v-if="rateDelta >= 0">
+        <LineChart class="text-green-800"/>
+        <span class="text-sm font-semibold text-green-800">{{ rateDelta }}%</span>
+      </div>
       <CardDescription>
-        Showing total visitors for the last 6 months
+        Last updated just now
       </CardDescription>
     </CardHeader>
     <CardContent>
       <ChartContainer :config="chartConfig">
         <VisXYContainer :data="chartData" :svg-defs="svgDefs">
           <VisArea
-            :x="(d: Data) => d.month"
-            :y="[(d: Data) => d.mobile, (d: Data) => d.desktop]"
-            :color="(d: Data, i: number) => ['url(#fillMobile)', 'url(#fillDesktop)'][i]"
+            :x="(d: Data) => d.day"
+            :y="[(d: Data) => d.desktop]"
+            :color="(d: Data, i: number) => ['url(#fillDesktop)'][i]"
             :opacity="0.4"
           />
           <VisLine
-            :x="(d: Data) => d.month"
-            :y="[(d: Data) => d.mobile, (d: Data) => d.mobile + d.desktop]"
-            :color="(d: Data, i: number) => [chartConfig.mobile.color, chartConfig.desktop.color][i]"
+            :x="(d: Data) => d.day"
+            :y="[(d: Data) => d.desktop]"
+            :color="(d: Data, i: number) => [chartConfig.desktop.color][i]"
             :line-width="1"
           />
           <VisAxis
             type="x"
-            :x="(d: Data) => d.month"
+            :x="(d: Data) => d.day"
             :tick-line="false"
             :domain-line="false"
             :grid-line="false"
             :num-ticks="6"
             :tick-format="(d: number, index: number) => {
-              return chartData[index]?.monthLabel.slice(0, 3)
+              return chartData[index]?.dayLabel.slice(0, 6)
             }"
           />
           <VisAxis
@@ -120,8 +133,8 @@ const svgDefs = `
           />
           <ChartTooltip />
           <ChartCrosshair
-            :template="componentToString(chartConfig, ChartTooltipContent, { labelKey: 'monthLabel' })"
-            :color="(d: Data, i: number) => [chartConfig.mobile.color, chartConfig.desktop.color][i % 2]"
+            :template="componentToString(chartConfig, ChartTooltipContent, { labelKey: 'dayLabel' })"
+            :color="(d: Data, i: number) => [chartConfig.desktop.color][i % 2]"
           />
         </VisXYContainer>
       </ChartContainer>
