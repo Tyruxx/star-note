@@ -1,8 +1,9 @@
 <script lang="ts" setup>
     import { ChevronLeft } from 'lucide-vue-next'
     import { Button } from '@/components/ui/button'
-    const stateConvertFrom = useState("convert-from", () => "IDR")
-    const stateConvertTo = useState("convert-to", () => "SGD")
+    import { Spinner } from '@/components/ui/spinner'
+    const stateConvertFrom = useState("convert-from", () => "")
+    const stateConvertTo = useState("convert-to", () => "")
     const convertFrom = computed(() => stateConvertFrom.value)
     const convertTo = computed(() => stateConvertTo.value)
     const { data: countryFrom } = await useFetch<Country[]>(() => `https://restcountries.com/v3.1/currency/${convertFrom.value}`, { watch: [convertFrom] })
@@ -49,17 +50,18 @@
     const countryToFallback = convertTo
 
     // chart props and logic
-    function getPastDates(range: number): string[] {
+    function getPastDates(range: number, offsetDays: number): string[] {
         const result: string[] = []
 
         const today = new Date()
+
         const start = new Date(Date.UTC(
             today.getUTCFullYear(),
             today.getUTCMonth(),
-            today.getUTCDate()
+            today.getUTCDate() - offsetDays
         ))
 
-        for (let i = 0; i < range; i++) {
+        for (let i = 0; i < range; i+=1) {
             const d = new Date(start)
             d.setUTCDate(start.getUTCDate() - i)
 
@@ -72,25 +74,65 @@
 
         return result
     }
-    const range = 7
-    const resultGetPastDates = computed(() => {
-        return getPastDates(range)
-    })
-    const { data: testStr } = await useFetch<testStrType>('/api/exchange-rate', {
-        query: {
-            base: convertFrom,
-            currency: convertTo,
-            dates: resultGetPastDates
-        },
-        watch: [convertFrom, convertTo, resultGetPastDates]
-    })
     type testStrType = {
-        finalArray: [number, string][],
-        finalStr: string,
-        rateDelta: number,
-    };
-    console.log("api test")
-    console.log(testStr.value)
+    finalArray: [number, string][],
+    finalStr: string,
+    rateDelta: number,
+    }
+
+
+    const testStr = ref<testStrType | null>(null)
+    const loading = ref(false)
+    const fetchError = ref<unknown>(null)
+
+    const range = 7
+    const maxRetries = 10 // safety cap so you don't loop forever
+
+    async function fetchWithRetries() {
+    loading.value = true
+    fetchError.value = null
+    testStr.value = null
+
+    for (let offsetDays = 0; offsetDays < maxRetries; offsetDays++) {
+        const dates = getPastDates(range, offsetDays)
+        console.log(dates)
+
+        const { data, error } = await useFetch<testStrType>("/api/exchange-rate", {
+        query: {
+            base: convertFrom.value,
+            currency: convertTo.value,
+            dates,
+        },
+        })
+        console.log(data.value)
+        if (error.value) {
+        console.log(error.value)
+        continue
+        }
+
+        const payload = data.value as any
+        if (payload && "errors" in payload) {
+        continue
+        }
+
+
+        testStr.value = data.value ?? null
+        loading.value = false
+        return
+    }
+
+
+    fetchError.value = new Error("Failed after retries")
+    loading.value = false
+    }
+
+
+    watch([convertFrom, convertTo], () => {
+        if (stateConvertFrom.value !== '' && stateConvertTo.value !== '')
+            {
+                console.log("yooowwwww")
+                fetchWithRetries()}
+    }, { immediate: true })
 </script>
 <template>
     <div class="mx-auto px-8 py-8 flex h-screen flex-col gap-4 max-w-lg">
@@ -103,8 +145,12 @@
         <div>
             <Conversion :country-from-img="countryFromImg" :country-to-img="countryToImg" :country-from-str="countryFromStr" :country-to-str="countryToStr" :country-from-fallback="countryFromFallback" :country-to-fallback="countryToFallback"/>
         </div>
-        <div>
-            <Chart :card-title="testStr?.finalStr ?? ''" :rate-delta="testStr?.rateDelta ?? 0" :chart-array="testStr?.finalArray ?? []"/>
+        <div v-if="stateConvertFrom !== '' && stateConvertTo !== '' ">
+            <Chart :card-title="testStr?.finalStr ?? ''" :rate-delta="testStr?.rateDelta ?? 0" :chart-array="testStr?.finalArray ?? []" v-if="testStr !== null"/>
+            <Button disabled v-else>
+                <Spinner />
+                Loading
+            </Button>
         </div>
     </div>
 </template>

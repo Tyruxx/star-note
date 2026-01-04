@@ -60,10 +60,22 @@ const yDomain = computed<number[]>(() => {
     const chartDataRate = chartData.value.map(d => d.rate)
     const max = Math.max(...chartDataRate)
     const min = Math.min(...chartDataRate)
-    const range = Math.max((max - min))
+    const range = Math.max((max - min), 0.000001)
     const padding = 0.5 * range
     return [min - padding, max + padding];
 })
+
+const xArray = computed<number>(() =>
+{
+  const length = props.chartArray.length
+  if (length > 8) {
+    return Number((length/10).toFixed(0))
+  }
+  else {
+    return 1
+  }
+}
+)
 
 type Data = typeof chartData.value[number]
 
@@ -122,7 +134,7 @@ watchEffect(() => {
         <span class="text-sm font-semibold text-green-800">+{{ rateDelta.toFixed(2) }}%</span>
       </div>
       <CardDescription>
-        Rate retrieved on {{ chartData[chartData.length - 1]?.dayLabel }}
+        Rate retrieved on {{ chartData[chartData.length - 1]?.dayLabel }} UTC
       </CardDescription>
     </CardHeader>
     <CardContent>
@@ -146,10 +158,11 @@ watchEffect(() => {
             :tick-line="false"
             :domain-line="false"
             :grid-line="false"
-            :num-ticks="6"
+            :num-ticks="10"
             :tick-values="chartData.map(d => d.day)"
-            :tick-format="(d: number, index: number) => {
-              return chartData[index]?.dayLabel.slice(0, 5)
+            :tick-format="(d: string, index: number) => {
+              d = chartData[index]?.dayLabel.slice(0, 5) ?? ''
+              return index % xArray == 0 ? d: ''
             }"
           />
           <VisAxis
@@ -167,7 +180,7 @@ watchEffect(() => {
         </VisXYContainer>
       </ChartContainer>
     </CardContent>
-    <CardFooter>
+    <CardFooter class="flex flex-col w-full gap-6">
       <!-- <div class="flex w-full items-start gap-2 text-sm">
         <div class="grid gap-2">
           <div class="flex items-center gap-2 leading-none font-medium">
@@ -178,7 +191,7 @@ watchEffect(() => {
           </div>
         </div>
       </div> -->
-      <div class="flex flex-col w-full gap-6">
+      <!-- <div class="flex flex-col w-full gap-6"> -->
         <div class="flex w-full max-w-lg flex-col gap-4 border-1 border-purple-800 p-4 rounded-xl bg-gradient-to-r from-purple-100 to-blue-100">
             <Item variant="default" class="p-2">
             <ItemMedia>
@@ -189,7 +202,7 @@ watchEffect(() => {
             </ItemContent>
             </Item>
             <Item variant="outline" size="sm" as-child class="bg-gradient-to-r from-purple-800 to-blue-800 text-white">
-                <a href="#">
+                <NuxtLink to="ai-reasoning">
                     <ItemMedia class="my-auto">
                     <BadgeCheckIcon class="size-5" />
                     </ItemMedia>
@@ -200,17 +213,17 @@ watchEffect(() => {
                     <ItemActions>
                     <ChevronRightIcon class="size-4" />
                     </ItemActions>
-                </a>
+                </NuxtLink>
             </Item>
         </div>
         <div class="w-full">
-            <Item variant="outline" size="sm" as-child>
+          <Item variant="outline" size="sm" as-child>
                 <a href="#">
                     <ItemMedia class="my-auto">
                     <BadgeCheckIcon class="size-5" />
                     </ItemMedia>
                     <ItemContent>
-                    <ItemTitle>Final exchange rate shown. No extra fees added later</ItemTitle>
+                    <ItemTitle>Final exchange rate is shown. No additional fees</ItemTitle>
                     <ItemDescription>Learn more</ItemDescription>
                     </ItemContent>
                     <ItemActions>
@@ -219,7 +232,7 @@ watchEffect(() => {
                 </a>
             </Item>
         </div>
-    </div>
+    <!-- </div> -->
     </CardFooter>
     </Card>
 </template>
