@@ -103,56 +103,52 @@
 
     for (let offsetDays = 0; offsetDays < maxRetries; offsetDays++) {
         const dates = getPastDates(range, offsetDays)
-        console.log(dates)
 
-        const { data, error } = await useFetch<testStrType>("/api/exchange-rate", {
+        const data = await $fetch<testStrType>("/api/exchange-rate", {
         query: {
             base: convertFrom.value,
             currency: convertTo.value,
             dates,
         },
         })
-        console.log(data.value)
-        if (error.value) {
-        console.log(error.value)
-        continue
-        }
 
-        const payload = data.value as any
+        const payload = data as any
         if (payload && "errors" in payload) {
         continue
         }
 
-
-        testStr.value = data.value ?? null
+        testStr.value = data ?? null
         loading.value = false
         return
     }
-
 
     fetchError.value = new Error("Failed after retries")
     loading.value = false
     }
 
 
-    watch([convertFrom, convertTo], () => {
+    watch([convertFrom, convertTo], async () => {
         if (stateConvertFrom.value !== '' && stateConvertTo.value !== '')
             {
-                aiResult.value = null
-                fetchWithRetries()
+                aiResult.value = JSON.parse("null")
+                await fetchWithRetries()
                 
                 // gemini ai api setup
-                const { data: response } = useLazyFetch('/api/gemini', {
-                    query: {
-                        pastData: testStr,
-                        base: stateConvertFrom,
-                        currency: stateConvertTo
-                    }
-                })
+                async function callGemini() {
+                    console.log("start")
+                    console.log(testStr.value)
+                    const response = await $fetch<string>('/api/gemini', {
+                        query: {
+                            pastData: testStr,
+                            base: stateConvertFrom,
+                            currency: stateConvertTo
+                        }
+                    })
+                    return response
+                }
+                const response = await callGemini()
                 // gemini ai response
-                watch((response), () => {
-                    aiResult.value = JSON.parse(response.value ?? "null")
-                })
+                aiResult.value = JSON.parse(response)
             }
     }, { immediate: true })
 </script>

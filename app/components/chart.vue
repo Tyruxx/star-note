@@ -51,13 +51,11 @@ const chartData = computed(() => {
     for (let [idx, num] of props.chartArray.entries()) {
         const obj = {
             day: idx,
-            dayLabel: num[1],
+            dayLabel: num[1].substring(5,10),
             rate: num[0]
         }
         tempData.push(obj)
-        console.log(obj)
     }
-    console.log(tempData)
     return tempData
 })
 

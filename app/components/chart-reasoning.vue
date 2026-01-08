@@ -38,7 +38,7 @@ const chartData = computed(() => {
     for (let pastNum of props.pastData) {
       const obj = {
         day: index,
-        dayLabel: pastNum[1] ?? "",
+        dayLabel: pastNum[1].substring(5,10) ?? "",
         predictedRate: pastNum[0] ?? 0
       }
       index++

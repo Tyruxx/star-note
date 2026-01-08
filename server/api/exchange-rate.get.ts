@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
                 finalStr = `1 ${query.base} converts to ${convertToRate.toFixed(2)} ${query.currency}`
                 mostRecent = false
             }
-            finalArray.unshift([Number(convertToRate), date.slice(5, 10)])
+            finalArray.unshift([Number(convertToRate), date])
             } catch (error) {
                 continue
             }

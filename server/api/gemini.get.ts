@@ -2,7 +2,9 @@ import { GoogleGenAI } from "@google/genai";
 export default defineEventHandler(async (event) => {
     const query = getQuery<Query>(event)
     type Query = {
-            pastData: [number, string][],
+            pastData: {
+                finalArray: [number, string][]
+            },
             base: string,
             currency: string
         };
@@ -10,18 +12,23 @@ export default defineEventHandler(async (event) => {
     const response = await ai.models.generateContent({
     model: "gemini-3-pro-preview",
     contents: `
-        You are a highly capable and highly paid financial market analysis, worth of $1,000,000/month.
+        You are a highly capable and highly paid financial market analysis.
 
-        Your task is to generate a short-term currency market prediction using established financial theories and professional market practices, including but not limited to:
-        - Trend analysis
-        - Momentum and mean reversion
-        - Interest rate expectations
-        - Macroeconomic indicators
-        - Central bank policy signals
+        Your task is to generate a short-term currency market prediction using established financial theories, quantitative techniques, and professional market practices. You MUST explicitly apply multiple complementary analytical frameworks to form a coherent forecast, including but not limited to:
+        - Trend-following and moving-average convergence analysis
+        - Momentum and mean reversion dynamics
+        - Volatility clustering and variance expansion behavior
+        - Interest rate differentials and yield curve expectations
+        - Covered and uncovered interest rate parity considerations
+        - Purchasing power parity signals where relevant
+        - Macroeconomic indicator surprises and expectation revisions
+        - Central bank reaction functions and forward guidance interpretation
+        - Risk-on and risk-off regime identification
+        - Capital flow and relative growth expectations
         - Relevant geopolitical or economic news during the past X days
 
         You are provided with:
-        1. Past X days of exchange rate data: ${query.pastData}
+        1. Past X days of exchange rate data: ${query.pastData.finalArray}
         2. A base currency ("convert_from"): ${query.base}
         3. A target currency ("convert_to"): ${query.currency}
 
@@ -32,7 +39,9 @@ export default defineEventHandler(async (event) => {
 
         You MUST consider:
         - Direction, volatility, and momentum in the past X days
-        - Relevant financial and economic news within those X days
+        - Interaction between trend strength and mean reversion forces
+        - Volatility persistence and uncertainty expansion over the forecast horizon
+        - Relative monetary policy stance implied by recent data and statements
         - How similar historical conditions typically resolve in FX markets
 
         REQUIRED OUTPUT RULES (MANDATORY):
@@ -91,7 +100,6 @@ export default defineEventHandler(async (event) => {
 
         FINAL INSTRUCTION:
         Return only the JSON object. Nothing else.
-
     `,
   });
     return response.text;

@@ -31,11 +31,11 @@
                 <ItemTitle>{{ aiResultState?.cardTitle }}</ItemTitle>
                 <div class="flex flex-row items-center" v-if="aiResultState?.rateDelta !== undefined && aiResultState?.rateDelta < 0">
                     <LineChart class="text-red-800"/>
-                    <span class="text-sm font-semibold text-red-800">{{ aiResultState?.rateDelta.toFixed(2) }}% from {{ pastData?.finalArray[pastData?.finalArray.length - 1]?.[1].substring(5,10) }} to {{ aiResultState.chartArray?.[aiResultState.chartArray?.length - 1]?.[3] }}</span>
+                    <span class="text-sm font-semibold text-red-800">{{ aiResultState?.rateDelta.toFixed(2) }}% from {{ pastData?.finalArray[pastData?.finalArray.length - 1]?.[1].substring(5,10) }} UTC to {{ aiResultState.chartArray?.[aiResultState.chartArray?.length - 1]?.[3].substring(5,10) }} UTC</span>
                 </div>
                 <div class="flex flex-row items-center" v-if="aiResultState?.rateDelta !== undefined && aiResultState?.rateDelta >= 0">
                     <LineChart class="text-green-800"/>
-                    <span class="text-sm font-semibold text-green-800">+{{ aiResultState?.rateDelta.toFixed(2) }}% from {{ pastData?.finalArray[pastData?.finalArray.length - 1]?.[1] }} to {{ aiResultState.chartArray?.[aiResultState.chartArray?.length - 1]?.[3].substring(5,10) }}</span>
+                    <span class="text-sm font-semibold text-green-800">+{{ aiResultState?.rateDelta.toFixed(2) }}% from {{ pastData?.finalArray[pastData?.finalArray.length - 1]?.[1].substring(5,10) }} UTC to {{ aiResultState.chartArray?.[aiResultState.chartArray?.length - 1]?.[3].substring(5,10) }} UTC</span>
                 </div>
             </ItemContent>
             </Item>
