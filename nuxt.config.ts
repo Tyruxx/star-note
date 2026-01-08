@@ -10,9 +10,8 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
   ],
   runtimeConfig: {
-    exchangeRateApiKey: "",
+    geminiApiKey: "",
     public: {
-      exchangeRateApi: ""
     }
   },
   shadcn: {

@@ -16,14 +16,14 @@ export default defineEventHandler(async (event) => {
         for (let date of query.dates) {
             try {
             type Result = Record<string,Record<string,number>>
-            let result = await $fetch<Result>(`${config.public.exchangeRateApi}${date}/v1/currencies/${query.base.toLowerCase()}.json`, {
+            let result = await $fetch<Result>(`https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@${date}/v1/currencies/${query.base.toLowerCase()}.json`, {
             headers: {
                 apikey: config.exchangeRateApiKey
             }
             })
             var convertToRate = result[query.base.toLowerCase()][query.currency.toLowerCase()]
             if (mostRecent === true) {
-                finalStr = `1 ${query.base} converts to ${convertToRate.toFixed(4)} ${query.currency}`
+                finalStr = `1 ${query.base} converts to ${convertToRate.toFixed(2)} ${query.currency}`
                 mostRecent = false
             }
             finalArray.unshift([Number(convertToRate), date.slice(5, 10)])

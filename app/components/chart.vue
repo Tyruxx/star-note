@@ -3,12 +3,27 @@ const props = defineProps<{
     cardTitle: string,
     rateDelta: number,
     chartArray: [number, string][],
+    aiResult: {
+        cardTitle: string,
+        rateDelta: number,
+        explanationString: string,
+        chartArray: [number, number, number, string][]
+    } | null
 }>()
 import type {
   ChartConfig,
 } from "@/components/ui/chart"
 
+import { Spinner } from "@/components/ui/spinner"
+
 import { LineChart, Sparkles, ChevronRightIcon, BadgeCheckIcon } from 'lucide-vue-next'
+
+type AiResult = {
+  "cardTitle": string,
+  "rateDelta": number,
+  "explanationString": string,
+  "chartArray": [number, number, number, string][]
+}
 
 // import { Area, LineChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { VisArea, VisAxis, VisLine, VisXYContainer } from "@unovis/vue"
@@ -91,24 +106,24 @@ const svgDefs = `
     <stop
       offset="5%"
       stop-color="var(--color-rate)"
-      stop-opacity="0.8"
+      stop-opacity="0.3"
     />
     <stop
       offset="95%"
       stop-color="var(--color-rate)"
-      stop-opacity="0.1"
+      stop-opacity="0.3"
     />
   </linearGradient>
   <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
     <stop
       offset="5%"
       stop-color="var(--color-mobile)"
-      stop-opacity="0.8"
+      stop-opacity="0.3"
     />
     <stop
       offset="95%"
       stop-color="var(--color-mobile)"
-      stop-opacity="0.1"
+      stop-opacity="0.3"
     />
   </linearGradient>
 `
@@ -158,7 +173,6 @@ watchEffect(() => {
             :tick-line="false"
             :domain-line="false"
             :grid-line="false"
-            :num-ticks="10"
             :tick-values="chartData.map(d => d.day)"
             :tick-format="(d: string, index: number) => {
               d = chartData[index]?.dayLabel.slice(0, 5) ?? ''
@@ -181,34 +195,25 @@ watchEffect(() => {
       </ChartContainer>
     </CardContent>
     <CardFooter class="flex flex-col w-full gap-6">
-      <!-- <div class="flex w-full items-start gap-2 text-sm">
-        <div class="grid gap-2">
-          <div class="flex items-center gap-2 leading-none font-medium">
-            Trending up by 5.2% this month <TrendingUp class="h-4 w-4" />
-          </div>
-          <div class="text-muted-foreground flex items-center gap-2 leading-none">
-            January - June 2024
-          </div>
-        </div>
-      </div> -->
-      <!-- <div class="flex flex-col w-full gap-6"> -->
         <div class="flex w-full max-w-lg flex-col gap-4 border-1 border-purple-800 p-4 rounded-xl bg-gradient-to-r from-purple-100 to-blue-100">
             <Item variant="default" class="p-2">
             <ItemMedia>
-               <Sparkles />
+               <Sparkles v-if="aiResult !== null"/>
+               <Spinner v-else />
             </ItemMedia>
             <ItemContent>
-                <ItemTitle>Upward trend for the next 3 months</ItemTitle>
+                <ItemTitle v-if="aiResult !== null">{{ aiResult.cardTitle }}</ItemTitle>
+                <ItemTitle v-else>Loading AI prediction...</ItemTitle>
             </ItemContent>
             </Item>
             <Item variant="outline" size="sm" as-child class="bg-gradient-to-r from-purple-800 to-blue-800 text-white">
-                <NuxtLink to="ai-reasoning">
+                <NuxtLink to="ai-reasoning" v-if="aiResult !== null">
                     <ItemMedia class="my-auto">
                     <BadgeCheckIcon class="size-5" />
                     </ItemMedia>
                     <ItemContent>
                     <ItemTitle>This is AI generated</ItemTitle>
-                    <ItemDescription class="text-white">See AI reasoning</ItemDescription>
+                    <ItemDescription class="text-white">See full AI analysis</ItemDescription>
                     </ItemContent>
                     <ItemActions>
                     <ChevronRightIcon class="size-4" />

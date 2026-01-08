@@ -16,6 +16,8 @@ const props = withDefaults(defineProps<{
   class?: HTMLAttributes["class"]
   color?: string
   x?: number | Date
+  // additional
+  upperLower?: Record<string, [number, number]>
 }>(), {
   payload: () => ({}),
   config: () => ({}),
@@ -54,7 +56,10 @@ const tooltipLabel = computed(() => {
     )"
   >
     <slot>
-      <div v-if="!nestLabel && tooltipLabel" class="font-medium">
+      <div v-if="!nestLabel && tooltipLabel && upperLower?.[tooltipLabel] !== undefined" class="font-medium" >
+        {{ tooltipLabel }} (Predicted Rate)
+      </div>
+      <div v-else-if="!nestLabel && tooltipLabel && upperLower?.[tooltipLabel] === undefined" class="font-medium" >
         {{ tooltipLabel }}
       </div>
       <div class="grid gap-1.5">
@@ -66,7 +71,7 @@ const tooltipLabel = computed(() => {
                indicator === 'dot' && 'items-center')"
         >
           <component :is="itemConfig.icon" v-if="itemConfig?.icon" />
-          <template v-else-if="!hideIndicator">
+          <template v-else-if="hideIndicator">
             <div
               :class="cn(
                 'shrink-0 rounded-[2px] border-(--color-border) bg-(--color-bg)',
@@ -84,19 +89,37 @@ const tooltipLabel = computed(() => {
               }"
             />
           </template>
-
-          <div :class="cn('flex flex-1 justify-between leading-none', nestLabel ? 'items-end' : 'items-center')">
-            <div class="grid gap-1.5">
-              <div v-if="nestLabel" class="font-medium">
-                {{ tooltipLabel }}
+            <div class="flex flex-col w-full">
+              <div :class="cn('flex flex-1 justify-between leading-none', nestLabel ? 'items-end' : 'items-center')">
+                <div class="grid gap-1.5">
+                  <span class="text-muted-foreground">
+                    {{ itemConfig?.label || value }}
+                  </span>
+                </div>
+                <span v-if="value" class="text-foreground font-mono font-medium tabular-nums">
+                  {{ value.toFixed(2) }}
+                </span>
               </div>
-              <span class="text-muted-foreground">
-                {{ itemConfig?.label || value }}
+            <div :class="cn('flex flex-1 justify-between leading-none', nestLabel ? 'items-end' : 'items-center')" v-if="upperLower?.[tooltipLabel] !== undefined">
+              <div class="grid gap-1.5">
+                <div class="text-muted-foreground">
+                  High
+                </div>
+              </div>
+              <span class="text-foreground font-mono font-medium tabular-nums">
+                {{ upperLower[tooltipLabel]?.[0].toFixed(2) }}
               </span>
             </div>
-            <span v-if="value" class="text-foreground font-mono font-medium tabular-nums">
-              {{ value.toFixed(2) }}
-            </span>
+            <div :class="cn('flex flex-1 justify-between leading-none', nestLabel ? 'items-end' : 'items-center')" v-if="upperLower?.[tooltipLabel] !== undefined">
+              <div class="grid gap-1.5">
+                <div class="text-muted-foreground">
+                  Low
+                </div>
+              </div>
+              <span class="text-foreground font-mono font-medium tabular-nums">
+                {{ upperLower[tooltipLabel]?.[1].toFixed(2) }}
+              </span>
+            </div>
           </div>
         </div>
       </div>

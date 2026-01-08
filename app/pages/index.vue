@@ -80,10 +80,18 @@
     rateDelta: number,
     }
 
+    type aiResultType = {
+        cardTitle: string,
+        rateDelta: number,
+        explanationString: string,
+        chartArray: [number, number, number, string][]
+    }
 
-    const testStr = ref<testStrType | null>(null)
+
+    const testStr = useState<testStrType | null>("past-data", () => null)
     const loading = ref(false)
     const fetchError = ref<unknown>(null)
+    const aiResult = useState<aiResultType | null>("ai-result", () => null)
 
     const range = 7
     const maxRetries = 10 // safety cap so you don't loop forever
@@ -130,23 +138,37 @@
     watch([convertFrom, convertTo], () => {
         if (stateConvertFrom.value !== '' && stateConvertTo.value !== '')
             {
-                console.log("yooowwwww")
-                fetchWithRetries()}
+                aiResult.value = null
+                fetchWithRetries()
+                
+                // gemini ai api setup
+                const { data: response } = useLazyFetch('/api/gemini', {
+                    query: {
+                        pastData: testStr,
+                        base: stateConvertFrom,
+                        currency: stateConvertTo
+                    }
+                })
+                // gemini ai response
+                watch((response), () => {
+                    aiResult.value = JSON.parse(response.value ?? "null")
+                })
+            }
     }, { immediate: true })
 </script>
 <template>
-    <div class="mx-auto px-8 py-8 flex h-screen flex-col gap-4 max-w-lg">
+    <div class="mx-auto px-8 py-8 flex flex-col gap-4 max-w-lg">
         <div>
-            <Button variant="secondary" size="icon">
-                <ChevronLeft />
+            <Button variant="secondary">
+                Demo
             </Button>
         </div>
-        <div class="mx-auto w-fit text-4xl font-semibold">Convert</div>
+        <div class="w-fit text-5xl font-semibold">Convert</div>
         <div>
             <Conversion :country-from-img="countryFromImg" :country-to-img="countryToImg" :country-from-str="countryFromStr" :country-to-str="countryToStr" :country-from-fallback="countryFromFallback" :country-to-fallback="countryToFallback"/>
         </div>
         <div v-if="stateConvertFrom !== '' && stateConvertTo !== '' ">
-            <Chart :card-title="testStr?.finalStr ?? ''" :rate-delta="testStr?.rateDelta ?? 0" :chart-array="testStr?.finalArray ?? []" v-if="testStr !== null"/>
+            <Chart :card-title="testStr?.finalStr ?? ''" :rate-delta="testStr?.rateDelta ?? 0" :chart-array="testStr?.finalArray ?? []" :ai-result="aiResult" v-if="testStr !== null"/>
             <Button disabled v-else>
                 <Spinner />
                 Loading
