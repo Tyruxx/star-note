@@ -62,7 +62,7 @@
                     <Item variant="outline">
                     <ItemMedia>
                         <Avatar class="size-10">
-                        <AvatarImage v-if="countryFromStr !== ''" :src="countryFromImg" />
+                        <AvatarImage :src="countryFromImg" />
                         <AvatarFallback>{{ countryFromFallback }}</AvatarFallback>
                         </Avatar>
                     </ItemMedia>
@@ -107,7 +107,7 @@
                     <Item variant="outline">
                     <ItemMedia>
                         <Avatar class="size-10">
-                        <AvatarImage v-if="countryToStr !== ''" :src="countryToImg" />
+                        <AvatarImage :src="countryToImg" />
                         <AvatarFallback>{{ countryToFallback }}</AvatarFallback>
                         </Avatar>
                     </ItemMedia>
@@ -148,7 +148,7 @@
                     </PopoverContent>
             </Popover>
         </div>
-        <Button variant="outline" size="icon" v-on:click="reverse()">
+        <Button variant="outline" size="icon" v-on:click="reverse()" class="cursor-pointer">
             <ArrowRightLeft />
         </Button>
     </div>

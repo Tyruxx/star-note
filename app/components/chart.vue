@@ -44,6 +44,13 @@ import {
   componentToString,
 } from "@/components/ui/chart"
 
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/components/ui/tabs'
+
 const description = "An area chart with axes"
 
 const chartData = computed(() => {
@@ -132,12 +139,17 @@ const crosshairTemplate = computed(() =>
 watchEffect(() => {
   console.log("crosshairTemplate:", crosshairTemplate.value)
 })
+
+const chosenRange = useState<number>("range")
+function updateRange(number: number) {
+  chosenRange.value = number
+}
 </script>
 
 <template>
   <Card class="gap-6">
     <CardHeader>
-      <CardTitle>{{ cardTitle }}</CardTitle>
+      <CardTitle class="text-base">{{ cardTitle }}</CardTitle>
       <div class="flex flex-row items-center" v-if="rateDelta < 0">
         <LineChart class="text-red-800"/>
         <span class="text-sm font-semibold text-red-800">{{ rateDelta.toFixed(2) }}%</span>
@@ -151,6 +163,16 @@ watchEffect(() => {
       </CardDescription>
     </CardHeader>
     <CardContent>
+      <Tabs :default-value="`${chosenRange}`">
+        <TabsList>
+          <TabsTrigger value="7" v-on:click="updateRange(7)" class="cursor-pointer">
+            7 Days
+          </TabsTrigger>
+          <TabsTrigger value="30" v-on:click="updateRange(30)" class="cursor-pointer">
+            30 Days
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
       <ChartContainer :config="chartConfig">
         <VisXYContainer :data="chartData" :svg-defs="svgDefs" :yDomain="yDomain">
           <VisArea
@@ -200,8 +222,8 @@ watchEffect(() => {
                <Spinner v-else />
             </ItemMedia>
             <ItemContent>
-                <ItemTitle v-if="aiResult !== null">{{ aiResult.cardTitle }}</ItemTitle>
-                <ItemTitle v-else>Loading AI prediction...</ItemTitle>
+                <ItemTitle v-if="aiResult !== null" class="text-base">{{ aiResult.cardTitle }}</ItemTitle>
+                <ItemTitle v-else class="text-base">Loading AI prediction...</ItemTitle>
             </ItemContent>
             </Item>
             <Item variant="outline" size="sm" as-child class="bg-gradient-to-r from-purple-800 to-blue-800 text-white">
@@ -221,7 +243,7 @@ watchEffect(() => {
         </div>
         <div class="w-full">
           <Item variant="outline" size="sm" as-child>
-                <a href="#">
+                <NuxtLink to="additional-fee">
                     <ItemMedia class="my-auto">
                     <BadgeCheckIcon class="size-5" />
                     </ItemMedia>
@@ -232,7 +254,7 @@ watchEffect(() => {
                     <ItemActions>
                     <ChevronRightIcon class="size-4" />
                     </ItemActions>
-                </a>
+                </NuxtLink>
             </Item>
         </div>
     <!-- </div> -->

@@ -78,6 +78,7 @@
     finalArray: [number, string][],
     finalStr: string,
     rateDelta: number,
+    collectionArray: [number, string, string, string][]
     }
 
     type aiResultType = {
@@ -93,8 +94,8 @@
     const fetchError = ref<unknown>(null)
     const aiResult = useState<aiResultType | null>("ai-result", () => null)
 
-    const range = 7
-    const maxRetries = 10 // safety cap so you don't loop forever
+    let range = useState<number>("range", () => 7)
+    const maxRetries = 10 // safety cap so don't loop forever
 
     async function fetchWithRetries() {
     loading.value = true
@@ -102,7 +103,8 @@
     testStr.value = null
 
     for (let offsetDays = 0; offsetDays < maxRetries; offsetDays++) {
-        const dates = getPastDates(range, offsetDays)
+        const dates = getPastDates(range.value, offsetDays)
+        const stateDate = useState("dates", () => dates);
 
         const data = await $fetch<testStrType>("/api/exchange-rate", {
         query: {
@@ -127,9 +129,12 @@
     }
 
 
-    watch([convertFrom, convertTo], async () => {
+    watch([convertFrom, convertTo, range], async () => {
         if (stateConvertFrom.value !== '' && stateConvertTo.value !== '')
             {
+                if (range.value == 1) {
+                    range.value = 7
+                }
                 aiResult.value = JSON.parse("null")
                 await fetchWithRetries()
                 
@@ -150,10 +155,17 @@
                 // gemini ai response
                 aiResult.value = JSON.parse(response)
             }
+        else {
+            if (stateConvertFrom.value == '' || stateConvertTo.value == '') {
+                range.value = 1
+                aiResult.value = JSON.parse("null")
+                await fetchWithRetries()
+            }
+        }
     }, { immediate: true })
 </script>
 <template>
-    <div class="mx-auto px-8 py-8 flex flex-col gap-4 max-w-lg">
+    <div class="mx-auto px-8 py-8 flex flex-col min-h-screen gap-4 max-w-lg">
         <div>
             <Button variant="secondary">
                 Demo
@@ -169,6 +181,13 @@
                 <Spinner />
                 Loading
             </Button>
+        </div>
+        <div v-else class="flex flex-col flex-1">
+            <RateCollection :final-array="testStr?.collectionArray ?? []" :convert-from="convertFrom" :convert-to="convertTo" v-if="testStr !== null"/>
+            <Button disabled v-else class="w-fit">
+                <Spinner />
+                Loading
+            </Button>            
         </div>
     </div>
 </template>

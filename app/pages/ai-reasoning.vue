@@ -28,7 +28,7 @@
             <Sparkles />
             </ItemMedia>
             <ItemContent>
-                <ItemTitle>{{ aiResultState?.cardTitle }}</ItemTitle>
+                <ItemTitle class="text-base">{{ aiResultState?.cardTitle }}</ItemTitle>
                 <div class="flex flex-row items-center" v-if="aiResultState?.rateDelta !== undefined && aiResultState?.rateDelta < 0">
                     <LineChart class="text-red-800"/>
                     <span class="text-sm font-semibold text-red-800">{{ aiResultState?.rateDelta.toFixed(2) }}% from {{ pastData?.finalArray[pastData?.finalArray.length - 1]?.[1].substring(5,10) }} UTC to {{ aiResultState.chartArray?.[aiResultState.chartArray?.length - 1]?.[3].substring(5,10) }} UTC</span>
@@ -46,7 +46,7 @@
             <div class="flex w-full max-w-lg flex-col gap-4 border-1 border-purple-800 p-4 rounded-xl bg-gradient-to-r from-purple-100 to-blue-100">
                 <Item variant="default" class="p-2">
                     <div class="text-base font-semibold">AI Explanation</div>
-                    {{ aiResultState?.explanationString }}
+                    <div class="text-base">{{ aiResultState?.explanationString }}</div>
                 </Item>
             </div>
         <div>
