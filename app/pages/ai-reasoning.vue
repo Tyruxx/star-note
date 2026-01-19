@@ -43,9 +43,9 @@
             </ItemMedia>
             <ItemContent>
                 <ItemTitle class="text-base">{{ aiResultState?.cardTitle }}</ItemTitle>
-                <div class="flex flex-row items-center" v-if="aiResultState?.rateDelta !== undefined && aiResultState?.rateDelta < 0">
+                <div class="flex flex-row items-center gap-3" v-if="aiResultState?.rateDelta !== undefined && aiResultState?.rateDelta < 0">
                     <LineChart class="text-red-800"/>
-                    <span class="text-sm font-semibold text-red-800">{{ aiResultState?.rateDelta.toFixed(2) }}% from {{ numToMonth[(pastData?.finalArray[pastData?.finalArray.length - 1]?.[1].substring(5,7)) ?? ""] }} {{ pastData?.finalArray[pastData?.finalArray.length - 1]?.[1].substring(8,10) }} UTC to {{ aiResultState.chartArray?.[aiResultState.chartArray?.length - 1]?.[3].substring(5,11) }} UTC</span>
+                    <span class="text-sm font-semibold text-red-800 gap-3">{{ aiResultState?.rateDelta.toFixed(2) }}% from {{ numToMonth[(pastData?.finalArray[pastData?.finalArray.length - 1]?.[1].substring(5,7)) ?? ""] }} {{ pastData?.finalArray[pastData?.finalArray.length - 1]?.[1].substring(8,10) }} UTC to {{ aiResultState.chartArray?.[aiResultState.chartArray?.length - 1]?.[3].substring(5,11) }} UTC</span>
                 </div>
                 <div class="flex flex-row items-center" v-if="aiResultState?.rateDelta !== undefined && aiResultState?.rateDelta >= 0">
                     <LineChart class="text-green-800"/>
