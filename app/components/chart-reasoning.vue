@@ -188,7 +188,7 @@ watchEffect(() => {
             :tick-values="chartData.map(d => d.day)"
             :tick-format="(d: string, index: number) => {
               d = chartData[index]?.dayLabel.slice(0, 6) ?? ''
-              return (index + 1) % xArray == 0 ? d: ''
+              return (index) % xArray == 0 ? d: ''
             }"
           />
           <VisAxis

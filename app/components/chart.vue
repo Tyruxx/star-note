@@ -181,8 +181,8 @@ function updateRange(number: number) {
           <TabsTrigger value="7" v-on:click="updateRange(7)" class="cursor-pointer">
             7 Days
           </TabsTrigger>
-          <TabsTrigger value="30" v-on:click="updateRange(30)" class="cursor-pointer">
-            30 Days
+          <TabsTrigger value="30" v-on:click="updateRange(31)" class="cursor-pointer">
+            31 Days
           </TabsTrigger>
         </TabsList>
       </Tabs>
@@ -209,7 +209,7 @@ function updateRange(number: number) {
             :tick-values="chartData.map(d => d.day)"
             :tick-format="(d: string, index: number) => {
               d = chartData[index]?.dayLabel.slice(0, 6) ?? ''
-              return (index + 1) % xArray == 0 ? d: ''
+              return (index) % xArray == 0 ? d: ''
             }"
           />
           <VisAxis
