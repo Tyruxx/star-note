@@ -105,15 +105,17 @@
     for (let offsetDays = 0; offsetDays < maxRetries; offsetDays++) {
         const dates = getPastDates(range.value, offsetDays)
         const stateDate = useState("dates", () => dates);
-
-        const data = await $fetch<testStrType>("/api/exchange-rate", {
-        query: {
-            base: convertFrom.value,
-            currency: convertTo.value,
-            dates,
-        },
-        })
-
+        try {
+            var data = await $fetch<testStrType>("/api/exchange-rate", {
+            query: {
+                base: convertFrom.value,
+                currency: convertTo.value,
+                dates,
+            },
+            })
+        } catch (err) {
+            continue
+        }
         const payload = data as any
         if (payload && "errors" in payload) {
         continue
@@ -129,13 +131,15 @@
     }
 
 
-    watch([convertFrom, convertTo, range], async () => {
+    watch([convertFrom, convertTo, range], async (_, __, onCleanup) => {
+        const controller = new AbortController()
+        onCleanup(() => controller.abort())
+        aiResult.value = null
         if (stateConvertFrom.value !== '' && stateConvertTo.value !== '')
             {
                 if (range.value == 1) {
                     range.value = 7
                 }
-                aiResult.value = JSON.parse("null")
                 await fetchWithRetries()
                 
                 // gemini ai api setup
@@ -147,7 +151,8 @@
                             pastData: testStr,
                             base: stateConvertFrom,
                             currency: stateConvertTo
-                        }
+                        },
+                        signal: controller.signal
                     })
                     return response
                 }
@@ -158,7 +163,6 @@
         else {
             if (stateConvertFrom.value == '' || stateConvertTo.value == '') {
                 range.value = 1
-                aiResult.value = JSON.parse("null")
                 await fetchWithRetries()
             }
         }
@@ -176,7 +180,7 @@
             <Conversion :country-from-img="countryFromImg" :country-to-img="countryToImg" :country-from-str="countryFromStr" :country-to-str="countryToStr" :country-from-fallback="countryFromFallback" :country-to-fallback="countryToFallback"/>
         </div>
         <div v-if="stateConvertFrom !== '' && stateConvertTo !== '' ">
-            <Chart :card-title="testStr?.finalStr ?? ''" :rate-delta="testStr?.rateDelta ?? 0" :chart-array="testStr?.finalArray ?? []" :ai-result="aiResult" v-if="testStr !== null"/>
+            <Chart :card-title="testStr?.finalStr ?? ''" :rate-delta="testStr?.rateDelta ?? 0" :chart-array="testStr?.finalArray ?? []" v-if="testStr !== null"/>
             <Button disabled v-else>
                 <Spinner />
                 Loading

@@ -3,13 +3,20 @@ const props = defineProps<{
     cardTitle: string,
     rateDelta: number,
     chartArray: [number, string][],
-    aiResult: {
+    // aiResult: {
+    //     cardTitle: string,
+    //     rateDelta: number,
+    //     explanationString: string,
+    //     chartArray: [number, number, number, string][]
+    // } | null
+}>()
+const aiResult = useState<AiResult>("ai-result")
+type AiResult = {
         cardTitle: string,
         rateDelta: number,
         explanationString: string,
         chartArray: [number, number, number, string][]
     } | null
-}>()
 import type {
   ChartConfig,
 } from "@/components/ui/chart"
@@ -17,13 +24,6 @@ import type {
 import { Spinner } from "@/components/ui/spinner"
 
 import { LineChart, Sparkles, ChevronRightIcon, BadgeCheckIcon } from 'lucide-vue-next'
-
-type AiResult = {
-  "cardTitle": string,
-  "rateDelta": number,
-  "explanationString": string,
-  "chartArray": [number, number, number, string][]
-}
 
 // import { Area, LineChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { VisArea, VisAxis, VisLine, VisXYContainer } from "@unovis/vue"
@@ -51,14 +51,27 @@ import {
   TabsTrigger,
 } from '@/components/ui/tabs'
 
-const description = "An area chart with axes"
+const numToMonth: Record<string, string> = {
+  "01": "Jan",
+  "02": "Feb",
+  "03": "Mar",
+  "04": "Apr",
+  "05": "May",
+  "06": "Jun",
+  "07": "Jul",
+  "08": "Aug",
+  "09": "Sep",
+  "10": "Oct",
+  "11": "Nov",
+  "12": "Dec"
+}
 
 const chartData = computed(() => {
     let tempData = []
     for (let [idx, num] of props.chartArray.entries()) {
         const obj = {
             day: idx,
-            dayLabel: num[1].substring(5,10),
+            dayLabel: `${numToMonth[num[1].substring(5,7)]} ${num[1].substring(8,10)}`,
             rate: num[0]
         }
         tempData.push(obj)
@@ -195,8 +208,8 @@ function updateRange(number: number) {
             :grid-line="false"
             :tick-values="chartData.map(d => d.day)"
             :tick-format="(d: string, index: number) => {
-              d = chartData[index]?.dayLabel.slice(0, 5) ?? ''
-              return index % xArray == 0 ? d: ''
+              d = chartData[index]?.dayLabel.slice(0, 6) ?? ''
+              return (index + 1) % xArray == 0 ? d: ''
             }"
           />
           <VisAxis

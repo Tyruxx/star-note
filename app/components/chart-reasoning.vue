@@ -32,13 +32,28 @@ import {
 
 const description = "An area chart with axes"
 
+const numToMonth: Record<string, string> = {
+  "01": "Jan",
+  "02": "Feb",
+  "03": "Mar",
+  "04": "Apr",
+  "05": "May",
+  "06": "Jun",
+  "07": "Jul",
+  "08": "Aug",
+  "09": "Sep",
+  "10": "Oct",
+  "11": "Nov",
+  "12": "Dec"
+}
+
 const chartData = computed(() => {
     let tempData = []
     let index = 0
     for (let pastNum of props.pastData) {
       const obj = {
         day: index,
-        dayLabel: pastNum[1].substring(5,10) ?? "",
+        dayLabel: `${numToMonth[pastNum[1].substring(5,7)]} ${pastNum[1].substring(8,10)}`,
         predictedRate: pastNum[0] ?? 0
       }
       index++
@@ -47,7 +62,7 @@ const chartData = computed(() => {
     for (let num of props.chartArray) {
         const obj = {
             day: index,
-            dayLabel: num[3].substring(5,10),
+            dayLabel: num[3].substring(5,11),
             predictedRate: num[0],
         }
         index++
@@ -127,7 +142,7 @@ const svgDefs = `
 const upperLower = computed(() => {
   let tempObj: Record<string, [number, number]> = {}
   for (let x of props.chartArray) {
-    tempObj[x[3].substring(5, 10)] = [x[1], x[2]]
+    tempObj[x[3].substring(5, 11)] = [x[1], x[2]]
   }
   return tempObj
 })
@@ -140,7 +155,7 @@ const payloadTemp = computed(() => {
   return tempObj
 })
 const crosshairTemplate = computed(() => {
-  componentToString(chartConfig, ChartTooltipContent, { labelKey: 'dayLabel', payload: payloadTemp.value, upperLower: upperLower.value })
+  return componentToString(chartConfig, ChartTooltipContent, { labelKey: 'dayLabel', payload: payloadTemp.value, upperLower: upperLower.value })
 }
 )
 
@@ -172,8 +187,8 @@ watchEffect(() => {
             :grid-line="false"
             :tick-values="chartData.map(d => d.day)"
             :tick-format="(d: string, index: number) => {
-              d = chartData[index]?.dayLabel.slice(0, 5) ?? ''
-              return index % xArray == 0 ? d: ''
+              d = chartData[index]?.dayLabel.slice(0, 6) ?? ''
+              return (index + 1) % xArray == 0 ? d: ''
             }"
           />
           <VisAxis
@@ -186,7 +201,7 @@ watchEffect(() => {
           <VisPlotband :from="((chartData.length)/2).toFixed(0)" :to="((chartData.length)).toFixed(0)" color="url(#aigradient)" axis="x"/>
           <ChartTooltip />
           <ChartCrosshair
-            :template="componentToString(chartConfig, ChartTooltipContent, { labelKey: 'dayLabel', payload: props.chartArray.map(x => ({[x[3]]: x[0]})), upperLower: upperLower})"
+            :template="crosshairTemplate"
             :color="(d: Data, i: number) => [chartConfig.predictedRate.color]"
           />
         </VisXYContainer>

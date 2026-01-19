@@ -96,8 +96,11 @@ const tooltipLabel = computed(() => {
                     {{ itemConfig?.label || value }}
                   </span>
                 </div>
-                <span v-if="value" class="text-foreground font-mono font-medium tabular-nums">
+                <span v-if="value && value >= 10" class="text-foreground font-mono font-medium tabular-nums">
                   {{ value.toFixed(2) }}
+                </span>
+                <span v-else-if="value && value < 10" class="text-foreground font-mono font-medium tabular-nums">
+                  {{ value.toFixed(4) }}
                 </span>
               </div>
             <div :class="cn('flex flex-1 justify-between leading-none', nestLabel ? 'items-end' : 'items-center')" v-if="upperLower?.[tooltipLabel] !== undefined">
@@ -106,8 +109,11 @@ const tooltipLabel = computed(() => {
                   High
                 </div>
               </div>
-              <span class="text-foreground font-mono font-medium tabular-nums">
+              <span v-if="(upperLower[tooltipLabel]?.[0] ?? 0) >= 10" class="text-foreground font-mono font-medium tabular-nums">
                 {{ upperLower[tooltipLabel]?.[0].toFixed(2) }}
+              </span>
+              <span v-else-if="(upperLower[tooltipLabel]?.[0] ?? 0) < 10" class="text-foreground font-mono font-medium tabular-nums">
+                {{ upperLower[tooltipLabel]?.[0].toFixed(4) }}
               </span>
             </div>
             <div :class="cn('flex flex-1 justify-between leading-none', nestLabel ? 'items-end' : 'items-center')" v-if="upperLower?.[tooltipLabel] !== undefined">
@@ -116,8 +122,11 @@ const tooltipLabel = computed(() => {
                   Low
                 </div>
               </div>
-              <span class="text-foreground font-mono font-medium tabular-nums">
+              <span v-if="(upperLower[tooltipLabel]?.[1] ?? 0) >= 10" class="text-foreground font-mono font-medium tabular-nums">
                 {{ upperLower[tooltipLabel]?.[1].toFixed(2) }}
+              </span>
+              <span v-else-if="(upperLower[tooltipLabel]?.[1] ?? 0) < 10" class="text-foreground font-mono font-medium tabular-nums">
+                {{ upperLower[tooltipLabel]?.[1].toFixed(4) }}
               </span>
             </div>
           </div>

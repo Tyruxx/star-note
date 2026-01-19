@@ -63,9 +63,10 @@ export default defineEventHandler(async (event) => {
         FIELD DEFINITIONS:
 
         cardTitle:
-        - MUST be EXACTLY one of these two templates (choose based on your prediction):
+        - MUST be EXACTLY one of these three templates (choose based on your prediction):
         - "Upward trend for the next X days"
         - "Downward trend for the next X days"
+        - "Neutral trend for the next X days"
         - Capitalization must match exactly as shown above
         - Replace X with the integer number of predicted days (the same X as input)
         - No extra words, no punctuation, no deviations
@@ -84,7 +85,9 @@ export default defineEventHandler(async (event) => {
         chartArray:
         - MUST contain EXACTLY X elements
         - Each element MUST be a 4-item tuple in this exact order:
-        [predictedRateRelativeToLastPastDate, upperBound90CI, lowerBound90CI, "YYYY-MM-DD"]
+        [predictedRateRelativeToLastPastDate, upperBound90CI, lowerBound90CI, "YYYY-Month DD"]
+        - Month is in 3-letter word format: Jan, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec
+        - Month and DD is separated by ONE space
         - predictedRateRelativeToLastPastDate is expressed relative to the final past-day rate
         - upperBound90CI must be greater than or equal to predictedRateRelativeToLastPastDate
         - lowerBound90CI must be less than or equal to predictedRateRelativeToLastPastDate
