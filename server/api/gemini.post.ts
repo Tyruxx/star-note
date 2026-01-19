@@ -1,7 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 export default defineEventHandler(async (event) => {
-    const query = getQuery<Query>(event)
-    type Query = {
+    const body = await readBody<Body>(event)
+    type Body = {
             pastData: {
                 finalArray: [number, string][]
             },
@@ -28,9 +28,9 @@ export default defineEventHandler(async (event) => {
         - Relevant geopolitical or economic news during the past X days
 
         You are provided with:
-        1. Past X days of exchange rate data: ${query.pastData.finalArray}
-        2. A base currency ("convert_from"): ${query.base}
-        3. A target currency ("convert_to"): ${query.currency}
+        1. Past X days of exchange rate data: ${body.pastData.finalArray}
+        2. A base currency ("convert_from"): ${body.base}
+        3. A target currency ("convert_to"): ${body.currency}
 
         IMPORTANT:
         - X is the number of past days provided.

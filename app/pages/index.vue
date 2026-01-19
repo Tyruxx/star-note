@@ -147,10 +147,11 @@
                     console.log("start")
                     console.log(testStr.value)
                     const response = await $fetch<string>('/api/gemini', {
-                        query: {
-                            pastData: testStr,
-                            base: stateConvertFrom,
-                            currency: stateConvertTo
+                        method: 'POST',
+                        body: {
+                            pastData: testStr.value,
+                            base: stateConvertFrom.value,
+                            currency: stateConvertTo.value
                         },
                         signal: controller.signal
                     })

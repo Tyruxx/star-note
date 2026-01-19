@@ -12,7 +12,21 @@
     }
     const aiResultState = useState<aiResultType | null>("ai-result")
     const pastData = useState<testStrType | null>("past-data")
-    import { ChevronLeft, Sparkles, LineChart } from 'lucide-vue-next'
+    import { Sparkles, LineChart } from 'lucide-vue-next'
+    const numToMonth: Record<string, string> = {
+        "01": "Jan",
+        "02": "Feb",
+        "03": "Mar",
+        "04": "Apr",
+        "05": "May",
+        "06": "Jun",
+        "07": "Jul",
+        "08": "Aug",
+        "09": "Sep",
+        "10": "Oct",
+        "11": "Nov",
+        "12": "Dec"
+    }
 </script>
 <template>
     <div class="mx-auto px-8 py-8 flex flex-col gap-4 max-w-lg">
@@ -31,11 +45,11 @@
                 <ItemTitle class="text-base">{{ aiResultState?.cardTitle }}</ItemTitle>
                 <div class="flex flex-row items-center" v-if="aiResultState?.rateDelta !== undefined && aiResultState?.rateDelta < 0">
                     <LineChart class="text-red-800"/>
-                    <span class="text-sm font-semibold text-red-800">{{ aiResultState?.rateDelta.toFixed(2) }}% from {{ pastData?.finalArray[pastData?.finalArray.length - 1]?.[1].substring(5,10) }} UTC to {{ aiResultState.chartArray?.[aiResultState.chartArray?.length - 1]?.[3].substring(5,10) }} UTC</span>
+                    <span class="text-sm font-semibold text-red-800">{{ aiResultState?.rateDelta.toFixed(2) }}% from {{ numToMonth[(pastData?.finalArray[pastData?.finalArray.length - 1]?.[1].substring(5,7)) ?? ""] }} {{ pastData?.finalArray[pastData?.finalArray.length - 1]?.[1].substring(8,10) }} UTC to {{ aiResultState.chartArray?.[aiResultState.chartArray?.length - 1]?.[3].substring(5,11) }} UTC</span>
                 </div>
                 <div class="flex flex-row items-center" v-if="aiResultState?.rateDelta !== undefined && aiResultState?.rateDelta >= 0">
                     <LineChart class="text-green-800"/>
-                    <span class="text-sm font-semibold text-green-800">+{{ aiResultState?.rateDelta.toFixed(2) }}% from {{ pastData?.finalArray[pastData?.finalArray.length - 1]?.[1].substring(5,10) }} UTC to {{ aiResultState.chartArray?.[aiResultState.chartArray?.length - 1]?.[3].substring(5,10) }} UTC</span>
+                    <span class="text-sm font-semibold text-green-800">+{{ aiResultState?.rateDelta.toFixed(2) }}% from {{ numToMonth[(pastData?.finalArray[pastData?.finalArray.length - 1]?.[1].substring(5,7)) ?? ""] }} {{ pastData?.finalArray[pastData?.finalArray.length - 1]?.[1].substring(8,10) }} UTC to {{ aiResultState.chartArray?.[aiResultState.chartArray?.length - 1]?.[3].substring(5,11) }} UTC</span>
                 </div>
             </ItemContent>
             </Item>
