@@ -181,7 +181,7 @@ function updateRange(number: number) {
           <TabsTrigger value="7" v-on:click="updateRange(7)" class="cursor-pointer">
             7 Days
           </TabsTrigger>
-          <TabsTrigger value="30" v-on:click="updateRange(31)" class="cursor-pointer">
+          <TabsTrigger value="31" v-on:click="updateRange(31)" class="cursor-pointer">
             31 Days
           </TabsTrigger>
         </TabsList>
