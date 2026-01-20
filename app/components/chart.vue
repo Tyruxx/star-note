@@ -164,11 +164,11 @@ function updateRange(number: number) {
   <Card class="gap-6">
     <CardHeader>
       <CardTitle class="text-base">{{ cardTitle }}</CardTitle>
-      <div class="flex flex-row items-center" v-if="rateDelta < 0">
+      <div class="flex flex-row items-center gap-1" v-if="rateDelta < 0">
         <LineChart class="text-red-800"/>
         <span class="text-sm font-semibold text-red-800">{{ rateDelta.toFixed(2) }}%</span>
       </div>
-      <div class="flex flex-row items-center" v-if="rateDelta >= 0">
+      <div class="flex flex-row items-center gap-1" v-if="rateDelta >= 0">
         <LineChart class="text-green-800"/>
         <span class="text-sm font-semibold text-green-800">+{{ rateDelta.toFixed(2) }}%</span>
       </div>
