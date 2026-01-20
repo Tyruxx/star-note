@@ -110,6 +110,7 @@ const xArray = computed<number>(() =>
 }
 )
 
+/** */
 type Data = typeof chartData.value[number]
 
 const chartConfig = {
