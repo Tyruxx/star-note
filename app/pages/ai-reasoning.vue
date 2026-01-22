@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    definePageMeta({
+    await definePageMeta({
         middleware: 'auth'
     })
     type aiResultType = {
