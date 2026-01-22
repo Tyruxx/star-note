@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+    definePageMeta({
+        middleware: 'auth'
+    })
     import { ChevronLeft } from 'lucide-vue-next'
     import { Button } from '@/components/ui/button'
     import { Spinner } from '@/components/ui/spinner'

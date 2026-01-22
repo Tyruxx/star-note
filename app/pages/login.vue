@@ -5,6 +5,9 @@ export const description = "A login page with a muted background color."
 <script setup lang="ts">
 import { Asterisk } from "lucide-vue-next"
 import LoginForm from "@/components/login-form.vue"
+definePageMeta({
+  middleware: 'guest'
+})
 </script>
 
 <template>
