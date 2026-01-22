@@ -9,9 +9,8 @@ export default defineNuxtRouteMiddleware(async () => {
   // })
   const { account } = useAppwrite()
   try {
-    const session = account.getSession({
-      sessionId: 'current'
-    })
+    const session = await account.get()
+    console.log(session)
   }
   catch (error) {
     // return navigateTo('/error')
