@@ -3,7 +3,9 @@ import { useAppwrite } from "~/composables/useAppwrite"
 export default defineNuxtRouteMiddleware(async () => {
   try {
     const { account } = useAppwrite()
-    await account.get()
+    account.get().then().catch(() => {
+      navigateTo('/login')
+    })
   }
   catch (err) {
     return navigateTo('/login')

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-    await definePageMeta({
+    definePageMeta({
         middleware: 'auth'
     })
     import { ChevronLeft } from 'lucide-vue-next'
