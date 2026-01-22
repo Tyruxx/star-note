@@ -27,10 +27,11 @@ const props = defineProps<{
 
 function createOAuth() {
   const { account } = useAppwrite()
-  account.createOAuth2Session(
-    OAuthProvider.Google,
-    'https://star-note-ten.vercel.app/',
-    'https://star-note-ten.vercel.app/error'
+  account.createOAuth2Session({
+      provider: OAuthProvider.Google,
+      success: 'https://star-note-ten.vercel.app/',
+      failure: 'https://star-note-ten.vercel.app/login'
+    }
   )
 }
 </script>
