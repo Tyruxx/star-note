@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
         };
     const ai = new GoogleGenAI({});
     const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
+    model: "gemini-3-pro-preview",
     contents: `
         You are a highly capable and highly paid financial market analysis.
 
