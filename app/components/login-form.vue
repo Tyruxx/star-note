@@ -30,7 +30,7 @@ function createOAuth() {
   account.createOAuth2Session(
     OAuthProvider.Google,
     'https://star-note-ten.vercel.app/',
-    'http://localhost:3000/login'
+    'https://star-note-ten.vercel.app/login'
   )
 }
 </script>
