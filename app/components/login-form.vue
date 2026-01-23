@@ -30,8 +30,7 @@ function createOAuth() {
   account.createOAuth2Session({
       provider: OAuthProvider.Google,
       success: 'https://star-note-ten.vercel.app/',
-      failure: 'https://star-note-ten.vercel.app/error',
-      scopes: ['account']
+      failure: 'https://star-note-ten.vercel.app/error'
     }
   )
 }
