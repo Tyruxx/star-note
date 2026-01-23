@@ -7,7 +7,8 @@ const { account } = useAppwrite()
 onMounted(async () => {
   const userId = route.query.userId as string | undefined
   const secret = route.query.secret as string | undefined
-
+  window.history.replaceState({}, '', '/auth/callback')
+  
   if (!userId || !secret) {
     return navigateTo('/login')
   }

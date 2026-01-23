@@ -1,8 +1,25 @@
 <script lang="ts" setup>
+    type Profile = {
+        "picture": string
+    }
     const { account } = useAppwrite()
+    let googleProfileInfo = ref<Profile | null>(null)
     try {
-        const session = await account.get()
+        const session = await account.getSession({
+            sessionId: 'current'
+        })
         console.log(session)
+        const { data } = await useFetch<Profile>(
+        'https://www.googleapis.com/oauth2/v3/userinfo',
+        {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${session.providerAccessToken}`,
+        },
+        server: false
+        }
+        )
+        googleProfileInfo.value = data.value ?? {"picture": ""} 
     }
     catch (error) {
         console.log(error)
@@ -189,6 +206,10 @@
                 Demo
             </Button>
             <Button class="cursor-pointer" @click="appwriteDeleteSessions">
+                <Avatar class="size-10">
+                    <AvatarImage :src="googleProfileInfo?.picture ?? ''" />
+                    <AvatarFallback>{{ countryToFallback }}</AvatarFallback>
+                </Avatar>
                 Logout
             </Button>
         </div>
