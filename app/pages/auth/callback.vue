@@ -22,7 +22,7 @@ onMounted(async () => {
     await account.get()
 
     // Redirect wherever you want
-    return navigateTo('/app')
+    return navigateTo('/')
   } catch (e) {
     console.log((e as any)?.message ?? e)
     return navigateTo('/login')
