@@ -2,8 +2,8 @@
     type Profile = {
         "picture": string
     };
-    const user = useFetch('/api/user')
-    console.log(user)
+    const { data: user } = await useFetch('/api/user')
+    console.log(user.value)
     // const { account } = useAppwrite()
     // let googleProfileInfo = ref<Profile | null>(null)
     // try {

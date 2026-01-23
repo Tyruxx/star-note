@@ -1,4 +1,4 @@
-<script setup lang="ts"> // chart
+<script setup lang="ts">
 const props = defineProps<{
     cardTitle: string,
     rateDelta: number,
