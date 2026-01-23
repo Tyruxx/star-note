@@ -12,6 +12,7 @@ try {
   navigateTo('/')
     }
 catch (error) {
+  console.log(error)
 }
 </script>
 
