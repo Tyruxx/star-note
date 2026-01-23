@@ -11,7 +11,10 @@ export default defineNuxtConfig({
   ],
   runtimeConfig: {
     geminiApiKey: "",
+    appwriteApiKey: "",
     public: {
+      appwriteEndpoint: "",
+      appwriteProject: ""
     }
   },
   shadcn: {

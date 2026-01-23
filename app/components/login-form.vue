@@ -26,13 +26,8 @@ const props = defineProps<{
   class?: HTMLAttributes["class"]
 }>()
 
-function createOAuth() {
-  account.createOAuth2Token({
-      provider: OAuthProvider.Google,
-      success: 'https://star-note-ten.vercel.app/auth/callback',
-      failure: 'https://star-note-ten.vercel.app/auth'
-    }
-  )
+async function createOAuth() {
+  await useFetch('/api/oauth', { method: 'POST' });
 }
 
 </script>

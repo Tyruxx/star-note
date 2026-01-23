@@ -1,33 +1,35 @@
 <script lang="ts" setup>
     type Profile = {
         "picture": string
-    }
-    const { account } = useAppwrite()
-    let googleProfileInfo = ref<Profile | null>(null)
-    try {
-        const session = await account.getSession({
-            sessionId: 'current'
-        })
-        console.log(session)
-        const { data } = await useFetch<Profile>(
-        'https://www.googleapis.com/oauth2/v3/userinfo',
-        {
-        method: 'GET',
-        headers: {
-            Authorization: `Basic ${session.providerAccessToken}`,
-        },
-        server: false
-        }
-        )
-        googleProfileInfo.value = data.value ?? {"picture": ""} 
-    }
-    catch (error) {
-        console.log(error)
-        navigateTo('/login')
-    }
+    };
+    const user = useFetch('/api/user')
+    console.log(user)
+    // const { account } = useAppwrite()
+    // let googleProfileInfo = ref<Profile | null>(null)
+    // try {
+    //     const session = await account.getSession({
+    //         sessionId: 'current'
+    //     })
+    //     console.log(session)
+    //     const { data } = await useFetch<Profile>(
+    //     'https://www.googleapis.com/oauth2/v3/userinfo',
+    //     {
+    //     method: 'GET',
+    //     headers: {
+    //         Authorization: `Basic ${session.providerAccessToken}`,
+    //     },
+    //     server: false
+    //     }
+    //     )
+    //     googleProfileInfo.value = data.value ?? {"picture": ""} 
+    // }
+    // catch (error) {
+    //     console.log(error)
+    //     navigateTo('/login')
+    // }
     async function appwriteDeleteSessions() {
-        await account.deleteSessions();
-        navigateTo('/login')
+        // await account.deleteSessions();
+        // navigateTo('/login')
     }
     import { ChevronLeft } from 'lucide-vue-next'
     import { Button } from '@/components/ui/button'
@@ -206,10 +208,10 @@
                 Demo
             </Button>
             <Button class="cursor-pointer" @click="appwriteDeleteSessions">
-                <Avatar class="size-10">
+                <!-- <Avatar class="size-10">
                     <AvatarImage :src="googleProfileInfo?.picture ?? ''" />
                     <AvatarFallback>{{ countryToFallback }}</AvatarFallback>
-                </Avatar>
+                </Avatar> -->
                 Logout
             </Button>
         </div>
