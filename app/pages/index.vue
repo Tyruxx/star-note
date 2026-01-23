@@ -5,6 +5,7 @@
     }
     catch (error) {
         console.log(error)
+        navigateTo('/login')
     }
     import { ChevronLeft } from 'lucide-vue-next'
     import { Button } from '@/components/ui/button'
