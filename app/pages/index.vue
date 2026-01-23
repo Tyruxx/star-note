@@ -2,6 +2,7 @@
     try {
         const { account } = useAppwrite()
         const session = await account.get()
+        console.log(session)
     }
     catch (error) {
         console.log(error)
