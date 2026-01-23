@@ -8,6 +8,7 @@ import LoginForm from "@/components/login-form.vue"
 try {
   const { account } = useAppwrite()
   const session = await account.get()
+  console.log(session)
   navigateTo('/')
     }
 catch (error) {
