@@ -29,8 +29,8 @@ const props = defineProps<{
 function createOAuth() {
   account.createOAuth2Token({
       provider: OAuthProvider.Google,
-      success: 'https://star-note-ten.vercel.app/',
-      failure: 'https://star-note-ten.vercel.app/error'
+      success: 'https://star-note-ten.vercel.app/auth/callback',
+      failure: 'https://star-note-ten.vercel.app/auth'
     }
   )
   const handleCallback = async (userId: string, secret: string) => {
