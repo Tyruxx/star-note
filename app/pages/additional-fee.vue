@@ -1,7 +1,11 @@
 <script lang="ts" setup>
-    definePageMeta({
-        middleware: 'auth'
-    })
+    try {
+        const { account } = useAppwrite()
+        const session = await account.get()
+    }
+    catch (error) {
+        navigateTo('/login')
+    }
 </script>
 <template>
     <div class="mx-auto px-8 py-8 flex flex-col h-screen justify-between max-w-lg">

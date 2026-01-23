@@ -1,7 +1,11 @@
 <script lang="ts" setup>
-    definePageMeta({
-        middleware: 'auth'
-    })
+    try {
+        const { account } = useAppwrite()
+        const session = await account.get()
+    }
+    catch (error) {
+        navigateTo('/login')
+    }
     type aiResultType = {
         cardTitle: string,
         rateDelta: number,

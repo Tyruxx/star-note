@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { account } = useAppwrite()
 import { useAppwrite } from "~/composables/useAppwrite"
 import type { HTMLAttributes } from "vue"
 import { Check } from "lucide-vue-next"
@@ -26,14 +27,15 @@ const props = defineProps<{
 }>()
 
 function createOAuth() {
-  const { account } = useAppwrite()
   account.createOAuth2Session({
       provider: OAuthProvider.Google,
       success: 'https://star-note-ten.vercel.app/',
-      failure: 'https://star-note-ten.vercel.app/error2'
+      failure: 'https://star-note-ten.vercel.app/error',
+      scopes: ['account']
     }
   )
 }
+
 </script>
 
 <template>

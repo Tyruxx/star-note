@@ -1,7 +1,11 @@
 <script lang="ts" setup>
-    definePageMeta({
-        middleware: 'auth'
-    })
+    try {
+        const { account } = useAppwrite()
+        const session = await account.get()
+    }
+    catch (error) {
+        console.log(error)
+    }
     import { ChevronLeft } from 'lucide-vue-next'
     import { Button } from '@/components/ui/button'
     import { Spinner } from '@/components/ui/spinner'
