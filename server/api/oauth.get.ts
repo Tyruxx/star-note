@@ -1,4 +1,4 @@
-import { SESSION_COOKIE, createAdminClient } from "./../lib/appwrite";
+import { SESSION_COOKIE, createAdminClient } from "../lib/appwrite";
 
 export default defineEventHandler(async (event) => {
   // Extract the userId and secret from the URL query parameters
