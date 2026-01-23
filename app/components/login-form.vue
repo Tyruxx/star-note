@@ -33,24 +33,6 @@ function createOAuth() {
       failure: 'https://star-note-ten.vercel.app/auth'
     }
   )
-  const handleCallback = async (userId: string, secret: string) => {
-  try {
-    // Create a session using the OAuth2 token
-    await account.createSession({
-      userId,
-      secret
-    })
-
-    // Get the user data
-    const user = await account.get()
-
-    // User is now authenticated!
-    return user
-  } catch (error) {
-      console.error('Authentication failed:', error)
-      throw error
-  }
-  }
 }
 
 </script>
