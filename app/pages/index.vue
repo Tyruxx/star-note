@@ -1,9 +1,7 @@
 <script lang="ts" setup>
     try {
         const { account } = useAppwrite()
-        const session = await account.getSession({
-            sessionId: 'current'
-        })
+        const session = await account.get()
     }
     catch (error) {
         console.log(error)
