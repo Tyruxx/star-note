@@ -14,6 +14,8 @@ import LoginForm from "@/components/login-form.vue"
 // catch (error) {
 //   console.log(error)
 // }
+  const { data: user } = await useFetch('/api/user')
+  console.log(user.value)
 </script>
 
 <template>
