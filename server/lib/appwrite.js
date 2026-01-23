@@ -2,12 +2,11 @@ import { Client, Account } from "node-appwrite";
 
 export const SESSION_COOKIE = "my-custom-session";
 
-export function createAdminClient() {
+export function createUserClient() {
   const config = useRuntimeConfig();
   const client = new Client()
     .setEndpoint(config.public.appwriteEndpoint)
     .setProject(config.public.appwriteProject)
-    .setKey(config.public.appwriteKey);
 
   return {
     get account() {

@@ -1,4 +1,4 @@
-import { SESSION_COOKIE, createAdminClient } from "../lib/appwrite";
+import { SESSION_COOKIE, createUserClient } from "../lib/appwrite";
 
 export default defineEventHandler(async (event) => {
   // Extract the userId and secret from the URL query parameters
@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   }
 
   // Create the Appwrite client
-  const { account } = createAdminClient();
+  const { account } = createUserClient();
 
   // Exchange the token userId and secret for a session
   const session = await account.createSession({

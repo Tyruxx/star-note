@@ -1,14 +1,14 @@
-import { createAdminClient } from "../lib/appwrite";
+import { createUserClient } from "../lib/appwrite";
 import { OAuthProvider } from "node-appwrite";
 
 export default defineEventHandler(async (event) => {
   const config = useRuntimeConfig(event);
-  const { account } = createAdminClient();
+  const { account } = createUserClient();
   const endpoint = config.public.appwriteEndpoint;
 
   const redirectUrl = await account.createOAuth2Token({
     provider: OAuthProvider.Google,
-    success: `https://star-note-ten.vercel.app/api/oauth`,
+    success: `https://star-note-ten.vercel.app/`,
     failure: `https://star-note-ten.vercel.app/login`
   });
 
