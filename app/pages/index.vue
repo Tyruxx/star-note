@@ -1,11 +1,15 @@
 <script lang="ts" setup>
+    const { account } = useAppwrite()
     try {
-        const { account } = useAppwrite()
         const session = await account.get()
         console.log(session)
     }
     catch (error) {
         console.log(error)
+        navigateTo('/login')
+    }
+    async function appwriteDeleteSessions() {
+        await account.deleteSessions();
         navigateTo('/login')
     }
     import { ChevronLeft } from 'lucide-vue-next'
@@ -180,9 +184,12 @@
 </script>
 <template>
     <div class="mx-auto px-8 py-8 flex flex-col min-h-screen gap-4 max-w-lg">
-        <div>
+        <div class="flex flex-row gap-4">
             <Button variant="secondary">
                 Demo
+            </Button>
+            <Button class="cursor-pointer" @click="appwriteDeleteSessions">
+                Logout
             </Button>
         </div>
         <div class="w-fit text-5xl font-semibold">Convert</div>
