@@ -14,7 +14,7 @@
         {
         method: 'GET',
         headers: {
-            Authorization: `Bearer ${session.providerAccessToken}`,
+            Authorization: `Basic ${session.providerAccessToken}`,
         },
         server: false
         }
