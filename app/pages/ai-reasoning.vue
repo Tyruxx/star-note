@@ -1,17 +1,4 @@
 <script lang="ts" setup>
-    const { account } = useAppwrite()
-    try {
-        const session = await account.get()
-        console.log(session)
-    }
-    catch (error) {
-        console.log(error)
-        navigateTo('/login')
-    }
-    async function appwriteDeleteSessions() {
-        await account.deleteSessions();
-        navigateTo('/login')
-    }
     type aiResultType = {
         cardTitle: string,
         rateDelta: number,
@@ -46,9 +33,6 @@
         <div>
             <Button variant="secondary">
                 Demo
-            </Button>
-            <Button class="cursor-pointer" @click="appwriteDeleteSessions">
-                Logout
             </Button>
         </div>
         <div class="w-fit text-5xl font-semibold">AI Analysis</div>

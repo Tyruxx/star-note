@@ -5,17 +5,6 @@ export const description = "A login page with a muted background color."
 <script setup lang="ts">
 import { Asterisk } from "lucide-vue-next"
 import LoginForm from "@/components/login-form.vue"
-// try {
-//   const { account } = useAppwrite()
-//   const session = await account.get()
-//   console.log(session)
-//   navigateTo('/')
-//     }
-// catch (error) {
-//   console.log(error)
-// }
-  const { data: user } = await useFetch('/api/user')
-  console.log(user.value)
 </script>
 
 <template>

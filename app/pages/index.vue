@@ -1,36 +1,4 @@
 <script lang="ts" setup>
-    type Profile = {
-        "picture": string
-    };
-    const { data: user } = await useFetch('/api/user')
-    console.log(user.value)
-    // const { account } = useAppwrite()
-    // let googleProfileInfo = ref<Profile | null>(null)
-    // try {
-    //     const session = await account.getSession({
-    //         sessionId: 'current'
-    //     })
-    //     console.log(session)
-    //     const { data } = await useFetch<Profile>(
-    //     'https://www.googleapis.com/oauth2/v3/userinfo',
-    //     {
-    //     method: 'GET',
-    //     headers: {
-    //         Authorization: `Basic ${session.providerAccessToken}`,
-    //     },
-    //     server: false
-    //     }
-    //     )
-    //     googleProfileInfo.value = data.value ?? {"picture": ""} 
-    // }
-    // catch (error) {
-    //     console.log(error)
-    //     navigateTo('/login')
-    // }
-    async function appwriteDeleteSessions() {
-        // await account.deleteSessions();
-        // navigateTo('/login')
-    }
     import { ChevronLeft } from 'lucide-vue-next'
     import { Button } from '@/components/ui/button'
     import { Spinner } from '@/components/ui/spinner'
@@ -203,16 +171,9 @@
 </script>
 <template>
     <div class="mx-auto px-8 py-8 flex flex-col min-h-screen gap-4 max-w-lg">
-        <div class="flex flex-row gap-4">
+        <div>
             <Button variant="secondary">
                 Demo
-            </Button>
-            <Button class="cursor-pointer" @click="appwriteDeleteSessions">
-                <!-- <Avatar class="size-10">
-                    <AvatarImage :src="googleProfileInfo?.picture ?? ''" />
-                    <AvatarFallback>{{ countryToFallback }}</AvatarFallback>
-                </Avatar> -->
-                Logout
             </Button>
         </div>
         <div class="w-fit text-5xl font-semibold">Convert</div>

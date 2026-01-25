@@ -1,27 +1,9 @@
-<script lang="ts" setup>
-    const { account } = useAppwrite()
-    try {
-        const session = await account.get()
-        console.log(session)
-    }
-    catch (error) {
-        console.log(error)
-        navigateTo('/login')
-    }
-    async function appwriteDeleteSessions() {
-        await account.deleteSessions();
-        navigateTo('/login')
-    }
-</script>
 <template>
     <div class="mx-auto px-8 py-8 flex flex-col h-screen justify-between max-w-lg">
         <div class="flex flex-col gap-4">
             <div>
                 <Button variant="secondary">
                     Demo
-                </Button>
-                <Button class="cursor-pointer" @click="appwriteDeleteSessions">
-                    Logout
                 </Button>
             </div>
             <div class="w-fit text-5xl font-semibold">Learn more about the additional fees</div>
