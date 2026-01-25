@@ -21,7 +21,10 @@ export default defineEventHandler(async (event) => {
     const { data: databaseData, error: databaseError } = await supabase.from('USER').select().eq('Email_Address', user?.email)
     const { count: nextUserId, error: countError } = await supabase.from('USER').select('*', { count: 'exact', head: false })
     if (databaseError || countError) {
-        throw createError(databaseError?.message ?? countError?.message ?? "")
+        throw createError({
+            statusCode: 500,
+            statusMessage: "Database Error"
+        })
     }
     if (databaseData?.length) {
     } else {
