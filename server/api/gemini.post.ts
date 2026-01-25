@@ -1,5 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 export default defineEventHandler(async (event) => {
+    await requireUserSession(event)
     const body = await readBody<Body>(event)
     type Body = {
             pastData: {

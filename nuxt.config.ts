@@ -8,9 +8,15 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/test-utils',
     'shadcn-nuxt',
+    'nuxt-vue3-google-signin',
+    'nuxt-auth-utils',
   ],
+  googleSignIn: {
+    clientId: process.env.NUXT_GOOGLE_CLIENT_ID,
+  },
   runtimeConfig: {
     geminiApiKey: "",
+    googleClientId: "",
     public: {
     }
   },

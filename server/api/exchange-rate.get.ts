@@ -1,4 +1,5 @@
 export default defineEventHandler(async (event) => {
+    await requireUserSession(event)
     try {
         const query = getQuery<Query>(event)
         let mostRecent = true

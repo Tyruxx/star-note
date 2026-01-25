@@ -1,3 +1,8 @@
+<script>
+    definePageMeta({
+        middleware: ['auth'],
+    })
+</script>
 <template>
     <div class="mx-auto px-8 py-8 flex flex-col h-screen justify-between max-w-lg">
         <div class="flex flex-col gap-4">

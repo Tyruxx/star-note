@@ -1,4 +1,11 @@
 <script lang="ts" setup>
+    definePageMeta({
+        middleware: ['auth'],
+    })
+    const { loggedIn, session, user: userSession, clear: clearSession, fetch: refreshSession } = useUserSession()
+    const userSessionUsable = computed(() => {
+        return userSession.value as Record<string, any>
+    })
     import { ChevronLeft } from 'lucide-vue-next'
     import { Button } from '@/components/ui/button'
     import { Spinner } from '@/components/ui/spinner'
@@ -168,13 +175,25 @@
             }
         }
     }, { immediate: true })
+    async function logOut() {
+        await clearSession()
+        await navigateTo('/login')
+    }
 </script>
 <template>
     <div class="mx-auto px-8 py-8 flex flex-col min-h-screen gap-4 max-w-lg">
-        <div>
+        <div class="flex flex-row justify-between">
             <Button variant="secondary">
                 Demo
             </Button>
+            <div class="flex flex-row gap-2">
+                <Button @click="logOut()">
+                    Logout
+                </Button>
+                <Avatar class="size-9">
+                    <AvatarImage :src="userSessionUsable.picture ?? ''"/>
+                </Avatar>
+            </div>
         </div>
         <div class="w-fit text-5xl font-semibold">Convert</div>
         <div>

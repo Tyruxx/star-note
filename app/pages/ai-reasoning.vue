@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+    definePageMeta({
+        middleware: ['auth'],
+    })
     type aiResultType = {
         cardTitle: string,
         rateDelta: number,
