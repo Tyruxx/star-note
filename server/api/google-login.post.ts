@@ -19,6 +19,7 @@ export default defineEventHandler(async (event) => {
     const user = await verify(token).catch(console.error);
 
     const { data: databaseData, error: databaseError } = await supabase.from('USER').select().eq('Email_Address', user?.email)
+    throw createError("supabase")
     const { count: nextUserId, error: countError } = await supabase.from('USER').select('*', { count: 'exact', head: false })
     if (databaseError || countError) {
         throw createError({
