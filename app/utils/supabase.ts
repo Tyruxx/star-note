@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NUXT_PUBLIC_SUPABASE_URL ?? "";
-const supabaseKey = process.env.NUXT_PUBLIC_SUPABASE_KEY ?? "";
+const config = useRuntimeConfig()
+const supabaseUrl = config.public.supabaseUrl;
+const supabaseKey = config.public.supabaseKey;
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
