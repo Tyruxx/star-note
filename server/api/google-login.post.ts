@@ -1,4 +1,5 @@
 import { OAuth2Client } from "google-auth-library";
+import { supabase } from "./../../app/utils/supabase"
 
 const config = useRuntimeConfig()
 const googleClientId = config.googleClientId
@@ -16,7 +17,19 @@ export default defineEventHandler(async (event) => {
     }
 
     const user = await verify(token).catch(console.error);
-    
+
+    const { data: databaseData, error: databaseError } = await supabase.from('USER').select().eq('Email_Address', user?.email)
+    const { count: nextUserId, error: countError } = await supabase.from('USER').select('*', { count: 'exact', head: false })
+    if (databaseError || countError) {
+        throw createError({
+            statusCode: 500,
+            statusMessage: "Database Error"
+        })
+    }
+    if (databaseData?.length) {
+    } else {
+        await supabase.from('USER').insert({ User_Id: nextUserId, Email_Address: user})
+    }
     await setUserSession(event, {
         user: user ?? undefined
     })
