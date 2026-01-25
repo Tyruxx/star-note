@@ -15,12 +15,16 @@ export default defineNuxtConfig({
   googleSignIn: {
     clientId: process.env.NUXT_GOOGLE_CLIENT_ID,
   },
+  supabase: {
+    url: process.env.NUXT_PUBLIC_SUPABASE_URL,
+    key: process.env.NUXT_PUBLIC_SUPABASE_KEY
+  },
   runtimeConfig: {
     geminiApiKey: "",
     googleClientId: "",
     public: {
-      supabaseUrl: "",
-      supabaseKey: ""
+      supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL,
+      supabaseKey: process.env.NUXT_PUBLIC_SUPABASE_KEY
     }
   },
   shadcn: {
