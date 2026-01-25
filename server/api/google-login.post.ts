@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event)
     const token = body.token
 
-    if (token) {
+    if (!token) {
         throw createError({
             statusCode: 400,
             statusMessage: 'No token or invalid token provided'
@@ -28,7 +28,7 @@ export default defineEventHandler(async (event) => {
     }
     if (databaseData?.length) {
     } else {
-        await supabase.from('USER').insert({ User_Id: nextUserId, Email_Address: user})
+        await supabase.from('USER').insert({ User_Id: nextUserId, Email_Address: user?.email})
     }
     await setUserSession(event, {
         user: user ?? undefined
