@@ -40,8 +40,11 @@ const handleLoginSuccess = async (response: CredentialResponse) => {
       })
       await refreshSession()
       await navigateTo('/')
-    } catch (error) {
-      throw error
+    } catch (err) {
+      throw createError({
+        statusCode: 500,
+        statusMessage: "Google Auth and Database Connection Failed"
+      })
     }
   }
 };
