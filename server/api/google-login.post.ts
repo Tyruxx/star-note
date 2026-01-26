@@ -18,8 +18,7 @@ export default defineEventHandler(async (event) => {
 
     const user = await verify(token).catch(console.error);
 
-    const { data: databaseData, error: databaseError } = await supabase.from('USER').select().eq('Email_Address', user?.email)
-    throw createError("supabase")
+    const { data: databaseData, error: databaseError } = await supabase.from('USER').select().eq('Email_Address', user?.email).maybeSingle()
     const { count: nextUserId, error: countError } = await supabase.from('USER').select('*', { count: 'exact', head: false })
     if (databaseError || countError) {
         throw createError({
@@ -27,9 +26,14 @@ export default defineEventHandler(async (event) => {
             statusMessage: "Database Error"
         })
     }
-    if (databaseData?.length) {
-    } else {
-        await supabase.from('USER').insert({ User_Id: nextUserId, Email_Address: user?.email})
+    if (!databaseData) {
+        const { error: insertError } = await supabase.from('USER').insert({ Email_Address: user?.email, Gemini_Request_Number: 0})
+        if (insertError) {
+            throw createError({
+                statusCode: 500,
+                statusMessage: "Failed to create user: " + insertError.message
+            })
+        }
     }
     await setUserSession(event, {
         user: user ?? undefined
