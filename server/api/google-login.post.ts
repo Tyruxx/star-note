@@ -22,12 +22,13 @@ export default defineEventHandler(async (event) => {
     const { data: databaseData } = await supabase.from('USER').select('*').eq('Email_Address', user?.email ?? "undefined")
     if (databaseData == null || databaseData.length == 0) {
         const { error: insertError } = await supabase.from('USER').insert({ Email_Address: user?.email ?? "", Gemini_Request_Number: 0 })
-        if (insertError) {
-            throw createError({
-                statusCode: 500,
-                statusMessage: "Failed to create user: " + insertError.message
-            })
-        }
+        // if (insertError) {
+        //     throw createError({
+        //         statusCode: 500,
+        //         statusMessage: "Failed to create user: " + insertError.message
+        //     })
+        // }
+        throw createError("empty")
     }
     
     await setUserSession(event, {
