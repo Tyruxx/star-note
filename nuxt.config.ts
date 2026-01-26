@@ -9,13 +9,8 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     'shadcn-nuxt',
     'nuxt-vue3-google-signin',
-    '@nuxtjs/supabase',
     'nuxt-auth-utils',
   ],
-  supabase: {
-    url: process.env.NUXT_PUBLIC_SUPABASE_URL,
-    key: process.env.NUXT_PUBLIC_SUPABASE_KEY
-  },
   googleSignIn: {
     clientId: process.env.NUXT_GOOGLE_CLIENT_ID,
   },
@@ -23,8 +18,6 @@ export default defineNuxtConfig({
     geminiApiKey: "",
     googleClientId: "",
     public: {
-      supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL,
-      supabaseKey: process.env.NUXT_PUBLIC_SUPABASE_KEY
     }
   },
   shadcn: {
