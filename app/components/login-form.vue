@@ -41,20 +41,18 @@ const handleLoginSuccess = async (response: CredentialResponse) => {
       await refreshSession()
       await navigateTo('/')
     } catch (err) {
-      throw createError({
-        statusCode: 500,
-        statusMessage: "Google Auth and Database Connection Failed"
-      })
+        throw createError({
+          statusCode: 500,
+          statusMessage: 'Google Auth Failed',
+          fatal: true
+        })
     }
   }
 };
 
 // handle an error event
 const handleLoginError = () => {
-  throw createError({
-    statusCode: 500,
-    statusText: "Google OAuth Failed"
-  })
+  console.error("Login failed");
 };
 
 const props = defineProps<{
@@ -67,7 +65,7 @@ const props = defineProps<{
     <Card class="py-8">
       <CardHeader class="text-center">
         <CardTitle class="text-xl">
-          Welcome to StarNote Converter {{ userSession }}
+          Welcome to StarNote Converter
         </CardTitle>
         <CardDescription class="flex flex-col items-start text-base text-primary">
           <div class="flex flex-row gap-2"><Check />Track currencies in real time</div>
