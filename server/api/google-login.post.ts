@@ -1,12 +1,12 @@
 import { OAuth2Client } from "google-auth-library";
-// import { serverSupabaseClient } from '#supabase/server'
+import { serverSupabaseClient } from '#supabase/server'
 
 const config = useRuntimeConfig()
 const googleClientId = config.googleClientId
 const client = new OAuth2Client(googleClientId)
 
 export default defineEventHandler(async (event) => {
-    // const supabase = await serverSupabaseClient(event)
+    const supabase = await serverSupabaseClient(event)
     const body = await readBody(event)
     const token = body.token
 
