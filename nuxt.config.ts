@@ -10,6 +10,7 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     'nuxt-vue3-google-signin',
     '@nuxtjs/supabase',
+    'nuxt-auth-utils',
   ],
   supabase: {
     url: process.env.NUXT_PUBLIC_SUPABASE_URL,
