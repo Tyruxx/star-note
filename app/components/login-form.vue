@@ -37,13 +37,13 @@ const handleLoginSuccess = async (response: CredentialResponse) => {
         token: credential
       }
     })
-    user.value = data.value
     if (error.value) {
       throw createError({
         statusCode: error.value.statusCode,
         statusMessage: error.value.statusMessage
       })
     } else {
+      user.value = data.value
       await refreshSession()
       await navigateTo('/')
     }
