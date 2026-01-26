@@ -40,8 +40,8 @@ const handleLoginSuccess = async (response: CredentialResponse) => {
       })
       await refreshSession()
       await navigateTo('/')
-    } catch (err) {
-      console.log(err)
+    } catch (error) {
+      throw error
     }
   }
 };
