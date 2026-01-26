@@ -1,5 +1,6 @@
 import { OAuth2Client } from "google-auth-library";
 import { serverSupabaseClient } from '#supabase/server';
+import { create } from "node:domain";
 
 const config = useRuntimeConfig()
 const googleClientId = config.googleClientId
@@ -20,16 +21,17 @@ export default defineEventHandler(async (event) => {
     const user = await verify(token).catch(console.error);
 
     const { data: databaseData } = await supabase.from('USER').select('*').eq('Email_Address', user?.email ?? "undefined")
-    if (databaseData == null || databaseData.length == 0) {
-        const { error: insertError } = await supabase.from('USER').insert({ Email_Address: user?.email ?? "", Gemini_Request_Number: 0 })
-        // if (insertError) {
-        //     throw createError({
-        //         statusCode: 500,
-        //         statusMessage: "Failed to create user: " + insertError.message
-        //     })
-        // }
-        throw createError("empty")
-    }
+    throw createError(databaseData?.[0].Email_Address ?? "")
+    // if (databaseData == null || databaseData.length == 0) {
+    //     const { error: insertError } = await supabase.from('USER').insert({ Email_Address: user?.email ?? "", Gemini_Request_Number: 0 })
+    //     // if (insertError) {
+    //     //     throw createError({
+    //     //         statusCode: 500,
+    //     //         statusMessage: "Failed to create user: " + insertError.message
+    //     //     })
+    //     // }
+    //     throw createError("empty")
+    // }
     
     await setUserSession(event, {
         user: user ?? undefined
