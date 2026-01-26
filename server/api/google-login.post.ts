@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
             statusMessage: "Database Error"
         })
     }
-    if (!databaseData) {
+    if (databaseData.length == 0) {
         const { error: insertError } = await supabase.from('USER').insert({ Email_Address: user?.email, Gemini_Request_Number: 0})
         if (insertError) {
             throw createError({
