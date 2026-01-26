@@ -21,7 +21,6 @@ export default defineEventHandler(async (event) => {
     const user = await verify(token).catch(console.error);
 
     const { data: databaseData } = await supabase.from('USER').select('*').eq('Email_Address', user?.email ?? "undefined")
-    throw createError(databaseData?.[0].Email_Address ?? "")
     // if (databaseData == null || databaseData.length == 0) {
     //     const { error: insertError } = await supabase.from('USER').insert({ Email_Address: user?.email ?? "", Gemini_Request_Number: 0 })
     //     // if (insertError) {

@@ -43,7 +43,7 @@ const handleLoginSuccess = async (response: CredentialResponse) => {
     } catch (err: any) {
         throw createError({
           statusCode: 500,
-          statusMessage: err,
+          statusMessage: "Google OAuth Error",
           fatal: true
         })
     }
