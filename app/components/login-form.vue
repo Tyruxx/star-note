@@ -26,26 +26,27 @@ const { loggedIn, session, user: userSession, clear, fetch: refreshSession } = u
 
 // handle success event
 type GoogleProfileInfo = {}
-const user = useState<GoogleProfileInfo | null>("user", () => null)
+const user = useState<GoogleProfileInfo | null | undefined>("user", () => null)
 const handleLoginSuccess = async (response: CredentialResponse) => {
   const { credential } = response;
 
   if (credential) {
-    try {
-      user.value = await $fetch<GoogleProfileInfo>("/api/google-login", {
-        method: "POST",
-        body: {
-          token: credential
-        }
+    const { data, error } = await useFetch<GoogleProfileInfo>("/api/google-login", {
+      method: "POST",
+      body: {
+        token: credential
+      }
+    })
+    if (error.value != undefined) {
+      throw createError({
+        statusCode: error.value.statusCode,
+        statusMessage: error.value.statusMessage,
+        fatal: true
       })
+    } else {
+      user.value = data.value
       await refreshSession()
       await navigateTo('/')
-    } catch (err: any) {
-        throw createError({
-          statusCode: 500,
-          statusMessage: "Google OAuth Error",
-          fatal: true
-        })
     }
   }
 };
