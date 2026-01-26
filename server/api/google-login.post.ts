@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
 
     const user = await verify(token).catch(console.error);
 
-    const { data: databaseData, error: databaseError } = await supabase.from('USER').select().eq('Email_Address', user?.email).maybeSingle()
+    const { data: databaseData, error: databaseError } = await supabase.from('USER').select().eq('Email_Address', user?.email ?? "")
     if (databaseError) {
         throw createError({
             statusCode: 500,
@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
         })
     }
     if (databaseData.length == 0) {
-        const { error: insertError } = await supabase.from('USER').insert({ Email_Address: user?.email, Gemini_Request_Number: 0})
+        const { error: insertError } = await supabase.from('USER').insert({ Email_Address: user?.email ?? "", Gemini_Request_Number: 0})
         if (insertError) {
             throw createError({
                 statusCode: 500,
