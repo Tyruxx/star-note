@@ -40,7 +40,7 @@ const handleLoginSuccess = async (response: CredentialResponse) => {
     if (error.value != undefined) {
       throw createError({
         statusCode: error.value.statusCode,
-        statusMessage: error.value.statusMessage,
+        statusMessage: error.value.message,
         fatal: true
       })
     } else {
