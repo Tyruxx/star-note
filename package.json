@@ -28,7 +28,6 @@
     "google-auth-library": "^10.5.0",
     "lucide-vue-next": "^0.562.0",
     "nuxt": "^4.2.2",
-    "nuxt-auth-utils": "^0.5.27",
     "nuxt-vue3-google-signin": "^0.0.13",
     "reka-ui": "^2.7.0",
     "shadcn-nuxt": "^2.4.3",

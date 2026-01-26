@@ -9,7 +9,6 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     'shadcn-nuxt',
     'nuxt-vue3-google-signin',
-    'nuxt-auth-utils',
     '@nuxtjs/supabase',
   ],
   supabase: {
