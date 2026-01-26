@@ -67,7 +67,7 @@ const props = defineProps<{
     <Card class="py-8">
       <CardHeader class="text-center">
         <CardTitle class="text-xl">
-          Welcome to StarNote Converter
+          Welcome to StarNote Converter {{ userSession }}
         </CardTitle>
         <CardDescription class="flex flex-col items-start text-base text-primary">
           <div class="flex flex-row gap-2"><Check />Track currencies in real time</div>
