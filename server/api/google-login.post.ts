@@ -34,6 +34,7 @@ export default defineEventHandler(async (event) => {
             })
         }
     }
+    throw createError("test")
     await setUserSession(event, {
         user: user ?? undefined
     })
