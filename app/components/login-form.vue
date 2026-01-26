@@ -39,7 +39,7 @@ const handleLoginSuccess = async (response: CredentialResponse) => {
         }
       })
       await refreshSession()
-      navigateTo('/')
+      await navigateTo('/')
     } catch (err) {
       throw createError({
         statusCode: 500,

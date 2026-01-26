@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-    definePageMeta({
-        middleware: ['auth'],
-    })
+    // definePageMeta({
+    //     middleware: ['auth'],
+    // })
     const { loggedIn, session, user: userSession, clear: clearSession, fetch: refreshSession } = useUserSession()
     const userSessionUsable = computed(() => {
         return userSession.value as Record<string, any>
