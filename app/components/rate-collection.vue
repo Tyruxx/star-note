@@ -58,7 +58,7 @@ const stateConvertFrom = useState("convert-from")
 const stateConvertTo = useState("convert-to")
 </script>
 <template>
-  <div class="flex flex-col flex-1 justify-between">
+  <div class="flex flex-col flex-1 gap-3">
     <div class="flex flex-col gap-3">
       <Badge variant="outline">StarNote's Recommendation</Badge>
       <div v-for="data of visibleArray" :key="data[0]" v-if="visibleArray.length != 0">
