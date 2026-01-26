@@ -36,7 +36,8 @@ const handleLoginSuccess = async (response: CredentialResponse) => {
         method: "POST",
         body: {
           token: credential
-        }
+        },
+        headers: useRequestHeaders(['cookie'])
       })
       await refreshSession()
       await navigateTo('/')
