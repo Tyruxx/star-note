@@ -40,10 +40,10 @@ const handleLoginSuccess = async (response: CredentialResponse) => {
       })
       await refreshSession()
       await navigateTo('/')
-    } catch (err) {
+    } catch (err: any) {
         throw createError({
           statusCode: 500,
-          statusMessage: 'Google Auth Failed',
+          statusMessage: err,
           fatal: true
         })
     }
