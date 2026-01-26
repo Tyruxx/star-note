@@ -21,16 +21,20 @@ export default defineEventHandler(async (event) => {
     const user = await verify(token).catch(console.error);
 
     const { data: databaseData } = await supabase.from('USER').select('*').eq('Email_Address', user?.email ?? "undefined")
-    // if (databaseData == null || databaseData.length == 0) {
-    //     const { error: insertError } = await supabase.from('USER').insert({ Email_Address: user?.email ?? "", Gemini_Request_Number: 0 })
-    //     // if (insertError) {
-    //     //     throw createError({
-    //     //         statusCode: 500,
-    //     //         statusMessage: "Failed to create user: " + insertError.message
-    //     //     })
-    //     // }
-    //     throw createError("empty")
-    // }
+    if (databaseData == null || databaseData.length == 0) {
+        const { data, error } = await supabase
+            .from('USER')
+            .insert([
+                { Email_Address: user?.email ?? "", Gemini_Request_Number: 0 },
+            ])
+            .select()
+        if (error) {
+             throw createError({
+                 statusCode: 500,
+                 statusMessage: "Failed to create user: " + error.message
+             })
+        }
+    }
     
     await setUserSession(event, {
         user: user ?? undefined
