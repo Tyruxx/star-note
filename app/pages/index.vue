@@ -6,6 +6,9 @@
     const userSessionUsable = computed(() => {
         return userSession.value as Record<string, any>
     })
+    const userSessionPictureUsable = computed<string>(() => {
+        return userSessionUsable.value.picture ?? ""
+    })
     import { ChevronLeft } from 'lucide-vue-next'
     import { Button } from '@/components/ui/button'
     import { Spinner } from '@/components/ui/spinner'
@@ -190,8 +193,9 @@
                 <Button @click="logOut()">
                     Logout
                 </Button>
-                <Avatar class="size-9">
-                    <AvatarImage :src="userSessionUsable.picture ?? ''"/>
+                <Avatar class="size-9" :key="userSessionPictureUsable">
+                    <AvatarImage :src="userSessionPictureUsable"/>
+                    <AvatarFallback>PIC</AvatarFallback>
                 </Avatar>
             </div>
         </div>
