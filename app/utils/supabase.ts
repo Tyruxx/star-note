@@ -5,4 +5,4 @@ const config = useRuntimeConfig()
 const supabaseUrl = config.public.supabaseUrl;
 const supabaseKey = config.public.supabaseKey;
 
-export const supabase = await createClient<Database>(supabaseUrl, supabaseKey);
+export const supabase = createClient<Database>(supabaseUrl, supabaseKey);
