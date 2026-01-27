@@ -9,14 +9,14 @@ import PixelSnow from '@/components/PixelSnow/PixelSnow.vue'
   <div class="bg-muted flex min-h-svh flex-col min-h-screen items-center justify-center gap-6 p-6 md:p-10">
     <div style="width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 0">
       <PixelSnow
-        color="#ffffff"
+        color="#6B21A8"
         :flakeSize="0.01"
         :minFlakeSize="1.25"
         :pixelResolution="200"
         :speed="1.25"
         :density="0.2"
         :direction="125"
-        :brightness="1"
+        :brightness="20"
       />
     </div>
     <div class="flex w-full max-w-sm flex-col gap-6" style="position: relative; z-index: 1">

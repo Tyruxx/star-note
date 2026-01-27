@@ -96,7 +96,7 @@ const props = defineProps<{
         </form>
       </CardContent>
     </Card>
-    <FieldDescription class="px-6 text-center text-primary">
+    <FieldDescription class="px-6 text-center">
       By clicking continue, you agree to our Terms of Service
       and Privacy Policy.
     </FieldDescription>
