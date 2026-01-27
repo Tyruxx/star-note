@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Asterisk } from "lucide-vue-next"
 import LoginForm from "@/components/login-form.vue"
+const loading = useState("loading-login", () => false)
 </script>
 
 <template>

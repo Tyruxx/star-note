@@ -3,6 +3,7 @@ import type { HTMLAttributes } from "vue"
 import { Check } from "lucide-vue-next"
 import { cn } from "@/lib/utils"
 import { Button } from '@/components/ui/button'
+import { Spinner } from '@/components/ui/spinner'
 import {
   Card,
   CardContent,
@@ -24,10 +25,12 @@ import {
 } from "vue3-google-signin";
 const { loggedIn, session, user: userSession, clear, fetch: refreshSession } = useUserSession()
 
+const loading = useState("loading-login")
 // handle success event
 type GoogleProfileInfo = {}
 const user = useState<GoogleProfileInfo | null | undefined>("user", () => null)
 const handleLoginSuccess = async (response: CredentialResponse) => {
+  loading.value = true
   const { credential } = response;
 
   if (credential) {
@@ -49,6 +52,7 @@ const handleLoginSuccess = async (response: CredentialResponse) => {
       await navigateTo('/')
     }
   }
+  loading.value = false
 };
 
 // handle an error event
@@ -78,10 +82,14 @@ const props = defineProps<{
           <FieldGroup>
             <Field>
               <div class="flex justify-center">
-                <GoogleSignInButton
+                <GoogleSignInButton v-if="!loading"
                   @success="handleLoginSuccess"
                   @error="handleLoginError">
                 </GoogleSignInButton>
+                <Button disabled v-else>
+                  <Spinner />
+                  Loading
+              </Button>
               </div>
             </Field>
           </FieldGroup>
