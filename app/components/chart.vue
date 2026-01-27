@@ -16,7 +16,9 @@ type AiResult = {
         rateDelta: number,
         explanationString: string,
         chartArray: [number, number, number, string][]
-    } | null
+    } | {
+      geminiOverload: string
+    }
 import type {
   ChartConfig,
 } from "@/components/ui/chart"
@@ -236,12 +238,13 @@ function updateRange(number: number) {
                <Spinner v-else />
             </ItemMedia>
             <ItemContent>
-                <ItemTitle v-if="aiResult !== null" class="text-base">{{ aiResult.cardTitle }}</ItemTitle>
+                <ItemTitle v-if="aiResult != null && !(`geminiOverload` in aiResult)" class="text-base">{{ aiResult.cardTitle }}</ItemTitle>
+                <ItemTitle v-else-if="aiResult != null && !(`cardTitle` in aiResult)" class="text-base">{{ aiResult.geminiOverload }}</ItemTitle>
                 <ItemTitle v-else class="text-base">Loading AI prediction...</ItemTitle>
             </ItemContent>
             </Item>
             <Item variant="outline" size="sm" as-child class="bg-gradient-to-r from-purple-800 to-blue-800 text-white">
-                <NuxtLink to="ai-reasoning" v-if="aiResult !== null">
+                <NuxtLink to="ai-reasoning" v-if="aiResult != null && !(`geminiOverload` in aiResult)">
                     <ItemMedia class="my-auto">
                     <BadgeCheckIcon class="size-5" />
                     </ItemMedia>

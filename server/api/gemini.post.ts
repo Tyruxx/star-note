@@ -1,18 +1,47 @@
 import { GoogleGenAI } from "@google/genai";
+import { serverSupabaseClient } from '#supabase/server';
+
 export default defineEventHandler(async (event) => {
     await requireUserSession(event)
     const body = await readBody<Body>(event)
     type Body = {
-            pastData: {
-                finalArray: [number, string][]
-            },
-            base: string,
-            currency: string
-        };
+        pastData: {
+            finalArray: [number, string][]
+        },
+        base: string,
+        currency: string,
+        user: any
+    };
+
+    // checks 'USER' table and see if the user has enough quota to use the Gemini API.
+    const supabase = await serverSupabaseClient(event)
+    const user = body.user
+    const { data: dateData } = await supabase.from('USER').select('Date_Today,Gemini_Request_Number').eq('Email_Address', user?.email ?? "undefined").single()
+    const today = new Date()
+    const todayFormatted = `${today.getUTCFullYear()}-${String(today.getUTCMonth() + 1).padStart(2, "0")}-${String(today.getUTCDate()).padStart(2, "0")}`
+    if (dateData == null || dateData.Date_Today != todayFormatted) {
+        const { data: geminiNumberUpdate } = await supabase
+            .from('USER')
+            .update({ Date_Today: todayFormatted, Gemini_Request_Number: 1 })
+            .eq('Email_Address', user?.email ?? "undefined")
+            .select()
+    }
+    else if (dateData.Date_Today == todayFormatted && dateData.Gemini_Request_Number >= 10) {
+        return '{"geminiOverload": "You have reached the AI Analysis API limit"}'
+    }
+    else {
+        const { data: geminiNumberUpdate } = await supabase
+            .from('USER')
+            .update({ Gemini_Request_Number: ++dateData.Gemini_Request_Number })
+            .eq('Email_Address', user?.email ?? "undefined")
+            .select()   
+    }
+
+    //
     const ai = new GoogleGenAI({});
     const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
-    contents: `
+        model: "gemini-3-flash-preview",
+        contents: `
         You are a highly capable and highly paid financial market analysis.
 
         Your task is to generate a short-term currency market prediction using established financial theories, quantitative techniques, and professional market practices. You MUST explicitly apply multiple complementary analytical frameworks to form a coherent forecast, including but not limited to:
@@ -105,6 +134,6 @@ export default defineEventHandler(async (event) => {
         FINAL INSTRUCTION:
         Return only the JSON object. Nothing else.
     `,
-  });
+    });
     return response.text;
 })

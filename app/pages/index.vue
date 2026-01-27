@@ -96,6 +96,8 @@
         rateDelta: number,
         explanationString: string,
         chartArray: [number, number, number, string][]
+    } | {
+        geminiOverload: string
     }
 
 
@@ -161,7 +163,8 @@
                         body: {
                             pastData: testStr.value,
                             base: stateConvertFrom.value,
-                            currency: stateConvertTo.value
+                            currency: stateConvertTo.value,
+                            user: userSession.value
                         },
                         signal: controller.signal
                     })
@@ -190,7 +193,7 @@
                 Demo
             </Button>
             <div class="flex flex-row gap-2">
-                <Button @click="logOut()">
+                <Button @click="logOut()" class="cursor-pointer">
                     Logout
                 </Button>
                 <Avatar class="size-9" :key="userSessionPictureUsable">
