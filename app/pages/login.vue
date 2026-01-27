@@ -14,7 +14,7 @@ import PixelSnow from '@/components/PixelSnow/PixelSnow.vue'
         :minFlakeSize="1.25"
         :pixelResolution="200"
         :speed="1.25"
-        :density="0.1"
+        :density="0.2"
         :direction="125"
         :brightness="1"
       />
