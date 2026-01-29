@@ -54,7 +54,7 @@ This process ensured that both technical and design decisions were consistently 
 ### Backend (Server Layer)
 - Nuxt Nitro (`server/api`)
 
-### Backend Services & Authentication
+### Database & Authentication
 - Supabase  
 - Google OAuth  
 
