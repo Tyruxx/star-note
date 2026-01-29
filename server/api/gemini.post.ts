@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
       .eq('Email_Address', user?.email ?? 'undefined')
       .select()
   }
-  else if (dateData.Date_Today == todayFormatted && dateData.Gemini_Request_Number >= 10) {
+  else if (dateData.Date_Today == todayFormatted && dateData.Gemini_Request_Number >= 50) {
     return '{"geminiOverload": "You have reached the daily AI Analysis API limit"}'
   }
   else {
