@@ -1,75 +1,72 @@
-# StarNote Nuxt Starter
+# ⭐ StarNote Converter
+**Web Personal Project I**
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+🔗 **Live Website:** https://starnote.alan-sebastian-bun.com/
 
-## Setup
+## Overview
 
-Make sure to install dependencies:
+StarNote Converter is a full-stack currency exchange web application that provides real-time exchange rates alongside AI-powered currency market analysis and prediction. The application addresses a key user problem: the lack of visibility into future currency movements, which makes it difficult for users to plan or make informed exchange decisions.
 
-```bash
-# npm
-npm install
+By combining live exchange rate data with predictive insights, StarNote helps users move from reactive currency exchanges to more confident, forward-looking financial decisions.
 
-# pnpm
-pnpm install
+## Problem Statement
 
-# yarn
-yarn install
+Most currency exchange tools focus solely on displaying current rates. While accurate, this approach leaves users uncertain about *when* to exchange and *how* rates may change in the near future. This lack of foresight often results in rushed or suboptimal decisions.
 
-# bun
-bun install
-```
+StarNote bridges this gap by pairing real-time exchange rates with AI-based analysis and prediction, giving users clearer context and greater confidence when planning currency exchanges.
 
-## Development Server
+## Key Features
 
-Start the development server on `http://localhost:3000`:
+- Real-time currency exchange rate tracking  
+- AI-powered currency trend analysis and prediction  
+- Historical exchange rate visualization  
+- Secure authentication via Google OAuth  
+- Usage-based rate limiting for AI predictions  
+- Clean, responsive UI optimized for usability  
+- Full-stack architecture with integrated server APIs  
 
-```bash
-# npm
-npm run dev
+## Design & Development Process
 
-# pnpm
-pnpm dev
+StarNote was developed independently during my winter break, with full ownership over the project from concept to implementation.
 
-# yarn
-yarn dev
+The concept was grounded in the complete **design thinking framework**, which included:
+- User research and empathy work with **three defined user personas**
+- Iterative design through **low-fidelity and high-fidelity prototypes**
+- **Peer-conducted Nielsen heuristic evaluations** to identify and refine usability issues before development
 
-# bun
-bun run dev
-```
+This process ensured that both technical and design decisions were consistently informed by real user needs.
 
-## Production
+## Tech Stack
 
-Build the application for production:
+### Framework & Language
+- **Nuxt** (full-stack web framework built on Vue)
+- **TypeScript**
 
-```bash
-# npm
-npm run build
+### Frontend
+- HTML  
+- CSS  
+- Tailwind CSS  
 
-# pnpm
-pnpm build
+### UI & Component Libraries
+- shadcn/ui  
+- Vue Bits  
 
-# yarn
-yarn build
+### Backend (Server Layer)
+- Nuxt Nitro (`server/api`)
 
-# bun
-bun run build
-```
+### Database & Backend Services
+- Supabase  
 
-Locally preview production build:
+### Authentication & User Management
+- Google OAuth  
+- Supabase (user tracking and usage limits)
 
-```bash
-# npm
-npm run preview
+Authentication and user management are handled via Google OAuth and Supabase. These services are used to track registered users and enforce application-level usage limits, restricting AI-powered currency rate prediction and analysis requests to **50 requests per user per day**.
 
-# pnpm
-pnpm preview
+### AI & Intelligence
+- Gemini AI  
 
-# yarn
-yarn preview
+### External REST APIs
+- **FlagCDN API** – country and currency flag assets  
+- **jsDelivr API** – retrieval of real-time and historical currency exchange rate data via CDN-hosted datasets  
 
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
