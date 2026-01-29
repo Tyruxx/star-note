@@ -183,6 +183,8 @@ watch([convertFrom, convertTo, range], async (_, __, onCleanup) => {
 }, { immediate: true })
 async function logOut() {
   await clearSession()
+  stateConvertFrom.value = ''
+  stateConvertTo.value = ''
   await navigateTo('/login')
 }
 </script>
