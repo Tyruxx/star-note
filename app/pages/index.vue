@@ -188,7 +188,7 @@
 </script>
 <template>
     <div class="mx-auto px-8 py-8 flex flex-col min-h-screen gap-4 max-w-lg">
-        <div class="flex flex-row justify-between">
+        <div class="flex flex-row justify-between" style="">
             <Button variant="secondary">
                 Demo
             </Button>

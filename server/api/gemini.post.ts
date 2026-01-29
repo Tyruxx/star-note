@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
             .select()
     }
     else if (dateData.Date_Today == todayFormatted && dateData.Gemini_Request_Number >= 10) {
-        return '{"geminiOverload": "You have reached the AI Analysis API limit"}'
+        return '{"geminiOverload": "You have reached the daily AI Analysis API limit"}'
     }
     else {
         const { data: geminiNumberUpdate } = await supabase
