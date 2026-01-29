@@ -95,7 +95,7 @@ const numToMonth: Record<string, string> = {
       </Item>
     </div>
     <div>
-      <NuxtLink to="/"><Button class="w-full cursor-pointer">Back</Button></NuxtLink>
+      <a href="/"><Button class="w-full cursor-pointer">Back</Button></a>
     </div>
   </div>
 </template>
