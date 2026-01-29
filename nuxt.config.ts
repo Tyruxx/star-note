@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import tailwindcss from "@tailwindcss/vite";
+import tailwindcss from '@tailwindcss/vite'
+
 export default defineNuxtConfig({
 
   modules: [
@@ -12,23 +13,30 @@ export default defineNuxtConfig({
     'nuxt-auth-utils',
     '@nuxtjs/supabase',
   ],
-  googleSignIn: {
-    clientId: process.env.NUXT_GOOGLE_CLIENT_ID,
-  },
-
-  supabase: {
-    url: process.env.NUXT_PUBLIC_SUPABASE_URL,
-    key: process.env.NUXT_PUBLIC_SUPABASE_KEY,
-    redirect: false
-  },
+  devtools: { enabled: true },
+  css: ['./app/assets/css/main.css'],
 
   runtimeConfig: {
-    geminiApiKey: "",
-    googleClientId: "",
+    geminiApiKey: '',
+    googleClientId: '',
     public: {
       supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL,
-      supabaseKey: process.env.NUXT_PUBLIC_SUPABASE_KEY
-    }
+      supabaseKey: process.env.NUXT_PUBLIC_SUPABASE_KEY,
+    },
+  },
+  compatibilityDate: '2025-07-15',
+  vite: {
+    plugins: [
+      tailwindcss(),
+    ],
+  },
+  eslint: {
+    config: {
+      stylistic: true,
+    },
+  },
+  googleSignIn: {
+    clientId: process.env.NUXT_GOOGLE_CLIENT_ID,
   },
   shadcn: {
     /**
@@ -42,19 +50,12 @@ export default defineNuxtConfig({
      * @link https://nuxt.com/docs/api/nuxt-config#alias
      * @default "@/components/ui"
      */
-    componentDir: '@/components/ui'
+    componentDir: '@/components/ui',
   },
-  css: ['./app/assets/css/main.css'],
-  vite: {
-    plugins: [
-      tailwindcss(),
-    ],
-  },
-  devtools: { enabled: true },
-  compatibilityDate: '2025-07-15',
-  eslint: {
-    config: {
-      stylistic: true,
-    },
+
+  supabase: {
+    url: process.env.NUXT_PUBLIC_SUPABASE_URL,
+    key: process.env.NUXT_PUBLIC_SUPABASE_KEY,
+    redirect: false,
   },
 })

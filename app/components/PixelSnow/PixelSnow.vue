@@ -8,15 +8,15 @@ import {
   ShaderMaterial,
   Vector2,
   Vector3,
-  WebGLRenderer
-} from 'three';
-import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch, type CSSProperties } from 'vue';
+  WebGLRenderer,
+} from 'three'
+import { onBeforeUnmount, onMounted, ref, useTemplateRef, watch, type CSSProperties } from 'vue'
 
 const vertexShader = `
 void main() {
   gl_Position = vec4(position, 1.0);
 }
-`;
+`
 
 const fragmentShader = `
 precision highp float;
@@ -131,23 +131,23 @@ void main() {
 
   gl_FragColor = vec4(0.0);
 }
-`;
+`
 
 interface PixelSnowProps {
-  color?: string;
-  flakeSize?: number;
-  minFlakeSize?: number;
-  pixelResolution?: number;
-  speed?: number;
-  depthFade?: number;
-  farPlane?: number;
-  brightness?: number;
-  gamma?: number;
-  density?: number;
-  variant?: 'square' | 'round' | 'snowflake';
-  direction?: number;
-  className?: string;
-  style?: CSSProperties;
+  color?: string
+  flakeSize?: number
+  minFlakeSize?: number
+  pixelResolution?: number
+  speed?: number
+  depthFade?: number
+  farPlane?: number
+  brightness?: number
+  gamma?: number
+  density?: number
+  variant?: 'square' | 'round' | 'snowflake'
+  direction?: number
+  className?: string
+  style?: CSSProperties
 }
 
 const props = withDefaults(defineProps<PixelSnowProps>(), {
@@ -164,32 +164,32 @@ const props = withDefaults(defineProps<PixelSnowProps>(), {
   variant: 'square',
   direction: 125,
   className: '',
-  style: () => ({})
-});
+  style: () => ({}),
+})
 
-const containerRef = useTemplateRef<HTMLDivElement>('containerRef');
-const animationRef = ref<number>(0);
+const containerRef = useTemplateRef<HTMLDivElement>('containerRef')
+const animationRef = ref<number>(0)
 
-let cleanupFn: (() => void) | null = null;
+let cleanupFn: (() => void) | null = null
 const setupFn = () => {
-  const container = containerRef.value;
-  if (!container) return;
+  const container = containerRef.value
+  if (!container) return
 
-  const scene = new Scene();
-  const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  const scene = new Scene()
+  const camera = new OrthographicCamera(-1, 1, 1, -1, 0, 1)
   const renderer = new WebGLRenderer({
     antialias: false,
     alpha: true,
     premultipliedAlpha: false,
-    powerPreference: 'high-performance'
-  });
+    powerPreference: 'high-performance',
+  })
 
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(container.offsetWidth, container.offsetHeight);
-  renderer.setClearColor(0x000000, 0);
-  container.appendChild(renderer.domElement);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+  renderer.setSize(container.offsetWidth, container.offsetHeight)
+  renderer.setClearColor(0x000000, 0)
+  container.appendChild(renderer.domElement)
 
-  const threeColor = new Color(props.color);
+  const threeColor = new Color(props.color)
   const material = new ShaderMaterial({
     vertexShader,
     fragmentShader,
@@ -207,47 +207,47 @@ const setupFn = () => {
       uGamma: { value: props.gamma },
       uDensity: { value: props.density },
       uVariant: { value: props.variant === 'round' ? 1.0 : props.variant === 'snowflake' ? 2.0 : 0.0 },
-      uDirection: { value: (props.direction * Math.PI) / 180 }
+      uDirection: { value: (props.direction * Math.PI) / 180 },
     },
-    transparent: true
-  });
+    transparent: true,
+  })
 
-  const geometry = new PlaneGeometry(2, 2);
-  scene.add(new Mesh(geometry, material));
+  const geometry = new PlaneGeometry(2, 2)
+  scene.add(new Mesh(geometry, material))
 
   const handleResize = () => {
     const w = container.offsetWidth,
-      h = container.offsetHeight;
-    renderer.setSize(w, h);
-    material.uniforms.uResolution.value.set(w, h);
-  };
-  window.addEventListener('resize', handleResize);
+      h = container.offsetHeight
+    renderer.setSize(w, h)
+    material.uniforms.uResolution.value.set(w, h)
+  }
+  window.addEventListener('resize', handleResize)
 
-  const startTime = performance.now();
+  const startTime = performance.now()
   const animate = () => {
-    animationRef.value = requestAnimationFrame(animate);
-    material.uniforms.uTime.value = (performance.now() - startTime) * 0.001;
-    renderer.render(scene, camera);
-  };
-  animate();
+    animationRef.value = requestAnimationFrame(animate)
+    material.uniforms.uTime.value = (performance.now() - startTime) * 0.001
+    renderer.render(scene, camera)
+  }
+  animate()
 
   cleanupFn = () => {
-    cancelAnimationFrame(animationRef.value);
-    window.removeEventListener('resize', handleResize);
-    container.removeChild(renderer.domElement);
-    renderer.dispose();
-    geometry.dispose();
-    material.dispose();
-  };
-};
+    cancelAnimationFrame(animationRef.value)
+    window.removeEventListener('resize', handleResize)
+    container.removeChild(renderer.domElement)
+    renderer.dispose()
+    geometry.dispose()
+    material.dispose()
+  }
+}
 
 onMounted(() => {
-  setupFn();
-});
+  setupFn()
+})
 
 onBeforeUnmount(() => {
-  cleanupFn?.();
-});
+  cleanupFn?.()
+})
 
 watch(
   () => [
@@ -262,16 +262,20 @@ watch(
     props.gamma,
     props.density,
     props.variant,
-    props.direction
+    props.direction,
   ],
   () => {
-    cleanupFn?.();
-    setupFn();
+    cleanupFn?.()
+    setupFn()
   },
-  { deep: true }
-);
+  { deep: true },
+)
 </script>
 
 <template>
-  <div ref="containerRef" :class="['absolute inset-0 w-full h-full', className]" :style="style"></div>
+  <div
+    ref="containerRef"
+    :class="['absolute inset-0 w-full h-full', className]"
+    :style="style"
+  />
 </template>

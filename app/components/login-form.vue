@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { HTMLAttributes } from "vue"
-import { Check } from "lucide-vue-next"
-import { cn } from "@/lib/utils"
+import type { HTMLAttributes } from 'vue'
+import { Check } from 'lucide-vue-next'
+import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import {
@@ -22,46 +22,48 @@ import { Input } from '@/components/ui/input'
 import {
   GoogleSignInButton,
   type CredentialResponse,
-} from "vue3-google-signin";
+} from 'vue3-google-signin'
+
 const { loggedIn, session, user: userSession, clear, fetch: refreshSession } = useUserSession()
 
-const loading = useState("loading-login")
+const loading = useState('loading-login')
 // handle success event
 type GoogleProfileInfo = {}
-const user = useState<GoogleProfileInfo | null | undefined>("user", () => null)
+const user = useState<GoogleProfileInfo | null | undefined>('user', () => null)
 const handleLoginSuccess = async (response: CredentialResponse) => {
   loading.value = true
-  const { credential } = response;
+  const { credential } = response
 
   if (credential) {
-    const { data, error } = await useFetch<GoogleProfileInfo>("/api/google-login", {
-      method: "POST",
+    const { data, error } = await useFetch<GoogleProfileInfo>('/api/google-login', {
+      method: 'POST',
       body: {
-        token: credential
-      }
+        token: credential,
+      },
     })
     if (error.value != undefined) {
       throw createError({
         statusCode: error.value.statusCode,
         statusMessage: error.value.message,
-        fatal: true
+        fatal: true,
       })
-    } else {
+    }
+    else {
       user.value = data.value
       await refreshSession()
       await navigateTo('/')
     }
   }
   loading.value = false
-};
+}
 
 // handle an error event
 const handleLoginError = () => {
-  console.error("Login failed");
-};
+  console.error('Login failed')
+}
 
 const props = defineProps<{
-  class?: HTMLAttributes["class"]
+  class?: HTMLAttributes['class']
 }>()
 </script>
 
@@ -73,8 +75,12 @@ const props = defineProps<{
           Welcome to StarNote Converter
         </CardTitle>
         <CardDescription class="flex flex-col items-start text-base text-primary">
-          <div class="flex flex-row gap-2"><Check />Track currencies in real time</div>
-          <div class="flex flex-row gap-2"><Check />Predict rates with AI</div>
+          <div class="flex flex-row gap-2">
+            <Check />Track currencies in real time
+          </div>
+          <div class="flex flex-row gap-2">
+            <Check />Predict rates with AI
+          </div>
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -82,14 +88,18 @@ const props = defineProps<{
           <FieldGroup>
             <Field>
               <div class="flex justify-center">
-                <GoogleSignInButton v-if="!loading"
+                <GoogleSignInButton
+                  v-if="!loading"
                   @success="handleLoginSuccess"
-                  @error="handleLoginError">
-                </GoogleSignInButton>
-                <Button disabled v-else>
+                  @error="handleLoginError"
+                />
+                <Button
+                  v-else
+                  disabled
+                >
                   <Spinner />
                   Loading
-              </Button>
+                </Button>
               </div>
             </Field>
           </FieldGroup>
