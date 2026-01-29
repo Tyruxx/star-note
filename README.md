@@ -1,5 +1,5 @@
 # ⭐ StarNote Converter
-**Web Personal Project I**
+**Web Personal Project**
 
 🔗 **Live Website:** https://starnote.alan-sebastian-bun.com/
 
@@ -54,12 +54,9 @@ This process ensured that both technical and design decisions were consistently 
 ### Backend (Server Layer)
 - Nuxt Nitro (`server/api`)
 
-### Database & Backend Services
+### Backend Services & Authentication
 - Supabase  
-
-### Authentication & User Management
 - Google OAuth  
-- Supabase (user tracking and usage limits)
 
 Authentication and user management are handled via Google OAuth and Supabase. These services are used to track registered users and enforce application-level usage limits, restricting AI-powered currency rate prediction and analysis requests to **50 requests per user per day**.
 
