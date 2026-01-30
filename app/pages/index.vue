@@ -183,7 +183,7 @@ watch([convertFrom, convertTo, range], async (_, __, onCleanup) => {
 }, { immediate: true })
 async function logOut() {
   await clearSession()
-  await navigateTo('/login')
+  await navigateTo('https://starnote.alan-sebastian-bun.com/login', { external: true })
 }
 </script>
 
