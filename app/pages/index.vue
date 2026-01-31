@@ -156,8 +156,6 @@ watch([convertFrom, convertTo, range], async (_, __, onCleanup) => {
 
     // gemini ai api setup
     async function callGemini() {
-      console.log('start')
-      console.log(testStr.value)
       const response = await $fetch<string>('/api/gemini', {
         method: 'POST',
         body: {

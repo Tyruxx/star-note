@@ -68,9 +68,7 @@ const chartData = computed(() => {
     }
     index++
     tempData.push(obj)
-    console.log(obj)
   }
-  console.log(tempData)
   return tempData
 })
 
@@ -158,10 +156,6 @@ const crosshairTemplate = computed(() => {
   return componentToString(chartConfig, ChartTooltipContent, { labelKey: 'dayLabel', payload: payloadTemp.value, upperLower: upperLower.value })
 },
 )
-
-watchEffect(() => {
-  console.log('crosshairTemplate:', crosshairTemplate.value)
-})
 </script>
 
 <template>

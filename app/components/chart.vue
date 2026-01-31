@@ -152,10 +152,6 @@ const crosshairTemplate = computed(() =>
   componentToString(chartConfig, ChartTooltipContent, { labelKey: 'dayLabel' }),
 )
 
-watchEffect(() => {
-  console.log('crosshairTemplate:', crosshairTemplate.value)
-})
-
 const chosenRange = useState<number>('range')
 function updateRange(number: number) {
   chosenRange.value = number

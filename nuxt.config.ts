@@ -19,9 +19,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     geminiApiKey: '',
     googleClientId: '',
+    supabaseUrl: process.env.NUXT_SUPABASE_URL,
+    supabaseKey: process.env.NUXT_SUPABASE_KEY,
     public: {
-      supabaseUrl: process.env.NUXT_PUBLIC_SUPABASE_URL,
-      supabaseKey: process.env.NUXT_PUBLIC_SUPABASE_KEY,
     },
   },
   compatibilityDate: '2025-07-15',
