@@ -67,5 +67,5 @@ Authentication and user management are handled via Google OAuth and Supabase. Th
 
 ### External REST APIs
 - **FlagCDN API** – country and currency flag assets  
-- **jsDelivr API** – retrieval of real-time and historical currency exchange rate data via CDN-hosted datasets  
+- **@fawazahmed0/currency-api jsDelivr API** – retrieval of real-time and historical currency exchange rate data via CDN-hosted datasets  
 
