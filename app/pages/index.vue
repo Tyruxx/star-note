@@ -188,12 +188,9 @@ async function logOut() {
 <template>
   <div class="mx-auto px-8 py-8 flex flex-col min-h-screen gap-4 max-w-lg">
     <div
-      class="flex flex-row justify-between"
+      class="flex flex-row justify-end"
       style=""
     >
-      <Button variant="secondary">
-        Demo
-      </Button>
       <div class="flex flex-row gap-2">
         <Button
           class="cursor-pointer"

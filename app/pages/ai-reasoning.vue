@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Sparkles, LineChart } from 'lucide-vue-next'
+import { Sparkles, LineChart, ChevronLeft } from 'lucide-vue-next'
 
 definePageMeta({
   middleware: ['auth'],
@@ -36,9 +36,11 @@ const numToMonth: Record<string, string> = {
 <template>
   <div class="mx-auto px-8 py-8 flex flex-col gap-4 max-w-lg">
     <div>
-      <Button variant="secondary">
-        Demo
-      </Button>
+      <NuxtLink to="/">
+        <Button variant="secondary">
+          <ChevronLeft />
+        </Button>
+      </NuxtLink>
     </div>
     <div class="w-fit text-5xl font-semibold">
       AI Analysis
@@ -95,7 +97,7 @@ const numToMonth: Record<string, string> = {
       </Item>
     </div>
     <div>
-      <NuxtLink to="/"><Button class="w-full cursor-pointer">Back</Button></NuxtLink>
+      <NuxtLink to="/"><Button class="w-full cursor-pointer">Done</Button></NuxtLink>
     </div>
   </div>
 </template>

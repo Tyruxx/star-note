@@ -1,4 +1,6 @@
-<script>
+<script lang="ts" setup>
+import { ChevronLeft } from 'lucide-vue-next'
+
 definePageMeta({
   middleware: ['auth'],
 })
@@ -8,9 +10,11 @@ definePageMeta({
   <div class="mx-auto px-8 py-8 flex flex-col h-screen justify-between max-w-lg">
     <div class="flex flex-col gap-4">
       <div>
-        <Button variant="secondary">
-          Demo
-        </Button>
+        <NuxtLink to="/">
+          <Button variant="secondary">
+            <ChevronLeft />
+          </Button>
+        </NuxtLink>
       </div>
       <div class="w-fit text-5xl font-semibold">
         Learn more about the additional fees
@@ -20,7 +24,7 @@ definePageMeta({
       </div>
     </div>
     <div class="">
-      <NuxtLink to="/"><Button class="w-full cursor-pointer">Back</Button></NuxtLink>
+      <NuxtLink to="/"><Button class="w-full cursor-pointer">Done</Button></NuxtLink>
     </div>
   </div>
 </template>
