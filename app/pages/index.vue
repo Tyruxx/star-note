@@ -43,6 +43,10 @@ function getCountryImg(from: boolean, convertFromTo?: Country[]) {
       (from === true && convertFrom.value === 'USD')
       || (from === false && convertTo.value === 'USD')
     ) { return 'https://flagcdn.com/w320/us.png' }
+    if (
+      (from === true && convertFrom.value === 'SGD')
+      || (from === false && convertTo.value === 'SGD')
+    ) { return 'https://flagcdn.com/w320/sg.png' }
   }
   return convertFromTo?.[0]?.flags.png
 }
